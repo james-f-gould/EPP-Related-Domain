@@ -1,0 +1,1593 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<!DOCTYPE rfc SYSTEM "rfc2629.dtd" [
+<!-- One method to get references from the online citation libraries.
+     There has to be one entity for each item to be referenced. 
+     An alternate method (rfc include) is described in the references. -->
+<!ENTITY RFC2119 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.2119.xml">
+<!ENTITY RFC5730 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.5730.xml">
+<!ENTITY RFC5731 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.5731.xml">
+<!ENTITY I-D.narten-iana-considerations-rfc2434bis SYSTEM "http://xml.resource.org/public/rfc/bibxml3/reference.I-D.narten-iana-considerations-rfc2434bis.xml">
+]>
+<?xml-stylesheet type='text/xsl' href='rfc2629.xslt' ?>
+<!-- used by XSLT processors -->
+<!-- For a complete list and description of processing instructions (PIs), 
+     please see http://xml.resource.org/authoring/README.html. -->
+<!-- Below are generally applicable Processing Instructions (PIs) that most I-Ds might want to use.
+     (Here they are set differently than their defaults in xml2rfc v1.32) -->
+<?rfc private="VeriSign Inc. Proprietary Information" ?>
+<?rfc strict="yes" ?>
+<!-- give errors regarding ID-nits and DTD validation -->
+<!-- control the table of contents (ToC) -->
+<?rfc toc="yes"?>
+<!-- generate a ToC -->
+<?rfc tocdepth="4"?>
+<!-- the number of levels of subsections in ToC. default: 3 -->
+<!-- control references -->
+<?rfc symrefs="yes"?>
+<!-- use symbolic references tags, i.e, [RFC2119] instead of [1] -->
+<?rfc sortrefs="yes" ?>
+<!-- sort the reference entries alphabetically -->
+<!-- control vertical white space 
+     (using these PIs as follows is recommended by the RFC Editor) -->
+<?rfc compact="yes" ?>
+<!-- do not start each main section on a new page -->
+<?rfc subcompact="yes"?>
+<!-- keep one blank line between list items -->
+<?rfc comments="yes" ?>
+<!-- show cref output -->
+<?rfc inline="yes" ?>
+<!-- inline cref output -->
+<!-- end of list of popular I-D processing instructions -->
+<rfc category="info" docName="verisign_epp-extension_idn-lang_v01" ipr="none">
+  <!-- category values: std, bcp, info, exp, and historic
+     ipr values: full3667, noModification3667, noDerivatives3667
+     you can add the attributes updates="NNNN" and obsoletes="NNNN" 
+     they will automatically be output with "(if approved)" -->
+
+  <!-- ***** FRONT MATTER ***** -->
+
+  <front>
+    <title abbrev="related-domain">Related Domain Extension for the Extensible Provisioning Protocol (EPP)</title>
+
+    <author fullname="James Gould" 
+      initials="J.G" surname="Gould">
+      <organization>VeriSign, Inc.</organization>
+
+      <address>
+        <postal>
+          <street>12061 Bluemont Way</street>
+
+          <city>Reston</city>
+
+          <region>VA</region>
+
+          <code>20190</code>
+
+          <country>US</country>
+        </postal>
+
+        <email>jgould@verisign.com</email>
+
+        <uri>http://www.verisigninc.com</uri>
+      </address>
+    </author>
+
+    <author fullname="Nagesh Chigurupati" 
+      initials="N.C" surname="Chigurupati">
+      <organization>VeriSign, Inc.</organization>
+
+      <address>
+        <postal>
+          <street>12061 Bluemont Way</street>
+
+          <city>Reston</city>
+
+          <region>VA</region>
+
+          <code>20190</code>
+
+          <country>US</country>
+        </postal>
+
+        <email>nchigurupati@verisign.com</email>
+
+        <uri>http://www.verisigninc.com</uri>
+      </address>
+    </author>
+
+    <author fullname="Srikanth Veeramachaneni" 
+      initials="S.V" surname="Veeramachaneni">
+      <organization>VeriSign, Inc.</organization>
+
+      <address>
+        <postal>
+          <street>12061 Bluemont Way</street>
+
+          <city>Reston</city>
+
+          <region>VA</region>
+
+          <code>20190</code>
+
+          <country>US</country>
+        </postal>
+
+        <email>sveeramachaneni@verisign.com</email>
+
+        <uri>http://www.verisigninc.com</uri>
+      </address>
+    </author>
+
+
+    <date day="2" month="January" year="2014"/>
+
+    <abstract>
+      <t>This document describes an Extensible Provisioning Protocol (EPP)
+      extension mapping for managing client-side and server-side 
+      domain name relationships.</t>
+    </abstract>
+    
+    <note title="Legal Disclaimer">
+      <t>COPYRIGHT NOTIFICATION</t>
+      <t>Copyright 2013 VeriSign, Inc. All rights reserved. VERISIGN; 
+      the Verisign logo; and other trademarks, service marks and Verisign designs are registered or 
+      unregistered trademarks of VeriSign Inc. and its subsidiaries in the United States and foreign countries. 
+      Copyright laws and international treaties protect this document, and any Verisign product to which it relates.</t>
+      
+      <t>VERISIGN PROPRIETARY INFORMATION</t>
+      <t>This document is the property of VeriSign, Inc. and its subsidiaries (together "Verisign") It may be used by 
+      recipient only for the purpose for which it was transmitted and must be returned upon request or when no longer 
+      needed by recipient. It may not be copied or communicated without the prior written consent of Verisign.</t>
+
+      <t>NOTICE AND CAUTION</t>
+      <t>Concerning U.S. Patent or Trademark Rights</t>
+      <t>Verisign and other trademarks, service marks and logos are registered or unregistered trademarks of 
+      Verisign and its subsidiaries in the United States and in foreign countries. The inclusion in this 
+      document, the associated on-line file or the associated software of any information covered by any 
+      other patent, trademark or service mark rights does not constitute nor imply a grant of or authority 
+      to exercise, any right or privilege protected by such patent, trademark or service mark. All such 
+      rights and privileges are vested in the patent, trademark or service mark owner and no other person 
+      may exercise such rights without express permission, authority or license secured from the patent, 
+      trademark or service mark owner.</t>    
+    </note>
+    
+  </front>
+
+  <middle>
+    <section title="Introduction">
+      <t>This document describes an extension mapping for version 1.0 of the
+      <xref target="RFC5730">Extensible Provisioning Protocol (EPP)</xref>.
+      This mapping, an extension of the domain name mapping described in <xref target="RFC5731"/>, 
+      for managing client-side and server-side domain name relationships.  
+      A client-side domain name relationship can be managed by using the extension to 
+      the transform commands that enable transforming more than one domain name 
+      in a single transform command.  A server-side domain name relationship 
+      (across top-level domains "tld" or variants within a top-level domain "variant") 
+      is reflected in the extension to the info response, and can be managed 
+      by using the extension to the transform commands.</t>
+
+      <section title="Conventions Used in This Document">
+        <t>The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
+        "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this
+        document are to be interpreted as described in <xref
+        target="RFC2119">RFC 2119</xref>.</t>
+
+        <t>XML is case sensitive. Unless stated otherwise, XML specifications
+        and examples provided in this document MUST be interpreted in the
+        character case presented in order to develop a conforming
+        implementation.</t>
+        
+        <t>In examples, "C:" represents lines sent by a protocol client and "S:" represents lines returned by a protocol server.  
+        Indentation and white space in examples are provided only to illustrate element relationships 
+        and are not a REQUIRED feature of this protocol.        
+        </t>
+
+        <t>"relDom-1.0" is used as an abbreviation for
+        "http://www.verisign-grs.com/epp/relatedDomain-1.0". The XML namespace prefix "relDom"
+        is used, but implementations MUST NOT depend on it and instead employ
+        a proper namespace-aware XML parser and serializer to interpret and
+        output the XML documents.</t>
+      </section>
+    </section>
+
+    <section anchor="attrs" title="Object Attributes">
+    
+      <t>This extension adds additional elements to the <xref
+      target="RFC5731">EPP domain name mapping</xref>. Only those new elements
+      are described here.</t>
+            
+    </section>
+
+    <section anchor="commands" title="EPP Command Mapping">
+      <t>A detailed description of the EPP syntax and semantics can be found
+      in the EPP core protocol specification <xref target="RFC5730"/>.</t>
+      
+      <section anchor="queryCommands" title="EPP Query Commands">
+      
+        <t>EPP provides three commands to retrieve object information: &lt;check&gt; to determine 
+        if an object is known to the server, &lt;info&gt; to retrieve detailed information associated 
+        with an object, and &lt;transfer&gt; to retrieve object transfer status information.</t>
+
+      <section anchor="checkCommand" title="EPP &lt;check&gt; Command">
+      
+       <t>This extension does not add any elements to the EPP &lt;check&gt; command 
+       or &lt;check&gt; response described in the 
+       <xref target="RFC5731">EPP domain name mapping</xref>.</t>
+             
+      </section>
+
+      <!-- end CHECK command -->
+
+      <section anchor="infoCommand" title="EPP &lt;info&gt; Command">
+      
+       <t>This extension defines additional elements to extend the EPP
+        &lt;info&gt; command described in <xref target="RFC5731">EPP domain name mapping</xref>.</t>
+        
+       <t>There are two forms of the extension to the EPP &lt;info&gt; 
+       command based on the "type" attribute: The Domain Info Form and the Related Info Form.</t> 
+       
+       <section anchor="infDataElement" title="&lt;relDom:infData&gt; Element">
+       
+       <t>
+       The &lt;relDom:infData&gt; element is returned to a successfully processed &lt;info&gt; command 
+       for both the <xref target="domainInfoForm">Domain Info Form</xref> and the <xref target="relatedInfoForm">Related Info Form</xref>.   
+       The &lt;relDom:infData&gt; element contains the following child elements:</t>
+       
+       <t><list hangIndent="4" style="hanging">
+          <t hangText="&lt;relDom:group&gt;">One or more &lt;relDom:group&gt; elements 
+          describing the group of related domains currently associated with the object.  
+          The &lt;relDomain:group&gt; element MUST contain a "type" attribute that defines 
+          the type of the related domains with the possible values of "tld" and "variant".  
+          The "tld" type represents a set of related domains across Top Level Domains (TLDs) 
+          and the "variant" type represents a set of related variant domains within a TLD.  
+          The &lt;relDom:group&gt; element contains the following child elements:</t>
+ 
+          <t><list hangIndent="4" style="hanging">
+            <t hangText="&lt;relDom:fields&gt;">element containing the set of fields 
+            that MUST be synchronized across the related domains.  The &lt;relDom:fields&gt; 
+            element MUST contain an "inSync" boolean attribute that defines whether all of 
+            the fields are synchronized.  The &lt;relDom:fields&gt; elements contains 
+            the following child elements:</t>
+            
+              <t><list hangIndent="4" style="hanging">
+              
+                <t hangText="&lt;relDom:field&gt;">One or more elements that 
+                MUST be the same across all of the related domains.  
+                The &lt;relDom:field&gt; element MUST contain a "name" attribute that 
+                defines the name of the field and an "inSync" boolean attribute that 
+                defines the field is synchronized across all of the related domains.</t>
+              
+              </list></t>
+           
+           <t hangText="&lt;relDom:registered&gt;">An OPTIONAL element containing one or more 
+           &lt;relDom:name&gt; elements specifying the related domains that are registered.</t>
+            
+           <t hangText="&lt;relDom:available&gt;">An OPTIONAL element containing 
+           one or more &lt;relDom:name&gt; elements specifying the related domains that are 
+           available for registration.</t>
+          
+          </list></t>
+
+       </list></t>
+       
+       </section>
+       
+       <section anchor="domainInfoForm" title="Domain Info Form">
+       
+         <t>
+         The Domain Info Form, defined with the &lt;relDom:info&gt; "type" attribute value of "domain", 
+         is used to get the domain information of an existing domain along with the related domain information. 
+         This is the default form when the &lt;relDom:info&gt; "type" attribute is not explicitly defined.   
+         With the Domain Info Form, in addition to the EPP info command elements described in <xref target="RFC5731"/>, 
+         the command MUST contain an &lt;extension&gt; element.  The &lt;extension&gt; element MUST 
+         contain a child &lt;relDom:info&gt; element, with the "type" attribute value of "domain" 
+         explicitly or by default, to indicate to the server to include the related domain information 
+         in an extension to the EPP info response described in <xref target="RFC5731"/>.</t>
+         
+       <figure>
+            <preamble>Example &lt;info&gt; command for a domain with the &lt;relDom:info&gt; extension 
+            using the Domain Info Form:</preamble>
+
+            <artwork><![CDATA[
+C:<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+C:<epp xmlns="urn:ietf:params:xml:ns:epp-1.0">
+C:  <command>
+C:    <info>
+C:      <domain:info 
+C:        xmlns:domain="urn:ietf:params:xml:ns:domain-1.0">
+C:        <domain:name>xn--test.tld1</domain:name>
+C:      </domain:info>
+C:    </info>
+C:    <extension>
+C:      <relDom:info 
+C:        xmlns:relDom=
+C:          "http://www.verisign.com/epp/relatedDomain-1.0" 
+C:        type="domain"/>
+C:    </extension>
+C:    <clTRID>ABC-12345</clTRID>
+C:  </command>
+C:</epp>]]></artwork>
+       </figure>
+         
+       <t>When an &lt;info&gt; command has been processed successfully, the EPP &lt;resData&gt; element 
+       MUST contain child elements as described in <xref target="RFC5731"/>. In addition, the EPP &lt;extension&gt; element SHOULD 
+       contain a child &lt;relDom:infData&gt; element that identifies the extension namespace if the 
+       object has one or more related domains associated with it and based on server policy.  
+       The &lt;relDom:infData&gt; element contains the child elements defined in <xref target="infDataElement"/>.</t>
+       
+      <figure>
+            <preamble>Example &lt;info&gt; response for a domain with both "tld" and "variant" 
+            related domain information using the Domain Info Form:</preamble>
+
+            <artwork><![CDATA[
+S:<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+S:<epp xmlns="urn:ietf:params:xml:ns:epp-1.0">
+S:  <response>
+S:    <result code="1000">
+S:      <msg>Command completed successfully</msg>
+S:  </result>
+S:  <resData>
+S:    <domain:infData xmlns:domain=
+S:      "urn:ietf:params:xml:ns:domain-1.0">
+S:      <domain:name>xn--test.tld1</domain:name>
+S:      <domain:roid>TEST1-REP</domain:roid>
+S:      <domain:status s="ok"/>
+S:      <domain:registrant>sh8013</domain:registrant>
+S:      <domain:contact type="admin">sh8013</domain:contact>
+S:      <domain:contact type="tech">sh8013</domain:contact>
+S:      <domain:contact type="billing">sh8013</domain:contact>
+S:      <domain:ns> 
+S:      <domain:hostObj>ns1.example.com</domain:hostObj>
+S:      <domain:hostObj>ns2.example.com</domain:hostObj>
+S:      </domain:ns>
+S:      <domain:host>ns1.example.com</domain:host>
+S:      <domain:host>ns2.example.com</domain:host>
+S:      <domain:clID>ClientX</domain:clID>
+S:      <domain:crID>ClientY</domain:crID>
+S:      <domain:crDate>1999-04-03T22:00:00.0Z</domain:crDate>
+S:      <domain:upID>ClientX</domain:upID>
+S:      <domain:upDate>1999-12-03T09:00:00.0Z</domain:upDate>
+S:      <domain:exDate>2005-04-03T22:00:00.0Z</domain:exDate>
+S:      <domain:trDate>2000-04-08T09:00:00.0Z</domain:trDate>
+S:      <domain:authInfo>
+S:        <domain:pw>2fooBAR</domain:pw>
+S:      </domain:authInfo>
+S:    </domain:infData>
+S:  </resData>
+S:  <extension>
+S:    <relDom:infData 
+S:      xmlns:relDom=
+S:        "http://www.verisign-grs.com/epp/relatedDomain-1.0">
+S:      <relDom:group type="tld">
+S:        <relDom:fields inSync="false">
+S:          <relDom:field name="clID" inSync="false">
+S:          <relDom:field name="registrant" inSync="true">
+S:          <relDom:field name="ns" inSync="false">
+S:        </relDom:fields>
+S:        <relDom:registered>
+S:          <relDom:name>xn--test.tld1</relDom:name>
+S:          <relDom:name>xn--test.tld2</relDom:name>
+S:        </relDom:registered>
+S:        <relDom:available>
+S:          <relDom:name>xn--test.tld3</relDom:name>
+S:        </relDom:available>
+S:      </relDom:group>
+S:      <relDom:group type="variant">
+S:        <relDom:fields inSync="true">
+S:          <relDom:field name="clID" inSync="true">
+S:          <relDom:field name="registrant" inSync="true">
+S:          <relDom:field name="ns" inSync="true">
+S:        </relDom:fields>
+S:        <relDom:registered>
+S:          <relDom:name>xn--test-variant1.tld1</relDom:name>           
+S:          <relDom:name>xn--test-variant2.tld1</relDom:name>           
+S:          <relDom:name>xn--test-variant3.tld1</relDom:name>           
+S:        </relDom:registered>
+S:        <relDom:available>
+S:          <relDom:name>xn--test-variant4.tld1</relDom:name>
+S:          <relDom:name>xn--test-variant5.tld1</relDom:name>
+S:          <relDom:name>xn--test-variant6.tld1</relDom:name>
+S:        </relDom:available>  
+S:      </relDom:group>
+S:    </relDom:infData>
+S:    </extension>
+S:    <trID>
+S:      <clTRID>ABC-12345</clTRID>
+S:      <svTRID>54322-XYZ</svTRID>
+S:    </trID>
+S:  </response>
+S:</epp>]]></artwork>
+       </figure>
+       
+       
+       </section>
+
+       <section anchor="relatedInfoForm" title="Related Info Form">
+       
+         <t>The Related Info Form, defined with the &lt;relDom:info&gt; "type" 
+         attribute value of "related", is a new command called the Related Domain Info Command.   
+         The command gets the related domain information of the &lt;domain:name&gt; info command element defined 
+         in <xref target="RFC5731"/>, independent of the existence of the domain name. 
+         With the Related Info Form, in addition to the EPP info command elements defined in 
+         <xref target="RFC5731"/>, the command MUST contain an &lt;extension&gt; element.  
+         The &lt;extension&gt; element MUST contain a child &lt;relDom:info&gt; element, 
+         with the "type" attribute value of "related", to indicate to the server to 
+         include the related domain information in an extension to the EPP response 
+         described in <xref target="RFC5730"/>.
+         </t>
+
+       <figure>
+            <preamble>Example &lt;info&gt; command for a domain with the &lt;relDom:info&gt; extension 
+            using the Related Info Form:</preamble>
+
+            <artwork><![CDATA[
+C:<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+C:<epp xmlns="urn:ietf:params:xml:ns:epp-1.0">
+C:  <command>
+C:    <info>
+C:      <domain:info 
+C:        xmlns:domain="urn:ietf:params:xml:ns:domain-1.0">
+C:        <domain:name>xn--test.tld3</domain:name>
+C:      </domain:info>
+C:    </info>
+C:    <extension>
+C:      <relDom:info 
+C:        xmlns:relDom=
+C:          "http://www.verisign.com/epp/relatedDomain-1.0" 
+C:        type="related"/>
+C:    </extension>
+C:    <clTRID>ABC-12345</clTRID>
+C:  </command>
+C:</epp>]]></artwork>
+       </figure>
+
+       <t>When an &lt;info&gt; command has been processed successfully, the EPP &lt;response&gt; element 
+       MUST contain an &lt;extension&gt; element.  
+       In addition, the EPP &lt;extension&gt; element SHOULD contain a child &lt;relDom:infData&gt; element 
+       that identifies the extension namespace if at least one related domain exists and based on server policy.  
+       The &lt;relDom:infData&gt; element contains the child elements defined in section <xref target="infDataElement"/>.</t>
+       
+      <figure>
+            <preamble>Example &lt;info&gt; response for both "tld" and "variant" 
+            related domain information using the Related Info Form:</preamble>
+
+            <artwork><![CDATA[
+S:<epp xmlns="urn:ietf:params:xml:ns:epp-1.0>
+S:  <response>
+S:    <result code="1000">
+S:      <msg>Command completed successfully</msg>
+S:    </result>
+S:    <extension>
+S:      <relDom:infData 
+S:        xmlns:relDom=
+S:          "http://www.verisign.com/epp/relatedDomain-1.0">
+S:        <relDom:group type="tld">
+S:          <relDom:fields inSync="false">
+S:            <relDom:field name="clID" inSync="false"/>
+S:            <relDom:field name="registrant" inSync="true"/>
+S:            <relDom:field name="ns" inSync="false"/>
+S:          </relDom:fields>
+S:          <relDom:registered>
+S:            <relDom:name>xn--test.tld1</relDom:name>
+S:            <relDom:name>xn--test.tld2</relDom:name>
+S:          </relDom:registered>
+S:          <relDom:available>
+S:            <relDom:name>xn--test.tld3</relDom:name>
+S:          </relDom:available>
+S:        </relDom:group>
+S:        <relDom:group type="variant">
+S:          <relDom:fields inSync="true">
+S:            <relDom:field name="clID" inSync="true"/>
+S:            <relDom:field name="registrant" inSync="true"/>
+S:            <relDom:field name="ns" inSync="true"/>
+S:          </relDom:fields>
+S:          <relDom:registered>
+S:            <relDom:name>xn--test-variant1.tld1</relDom:name>
+S:            <relDom:name>xn--test-variant1.tld2</relDom:name>
+S:            <relDom:name>xn--test-variant1.tld3</relDom:name>
+S:          </relDom:registered>
+S:          <relDom:available>
+S:            <relDom:name>xn--test-variant2.tld1</relDom:name>
+S:            <relDom:name>xn--test-variant2.tld2</relDom:name>
+S:            <relDom:name>xn--test-variant2.tld3</relDom:name>
+S:          </relDom:available>
+S:        </relDom:group>
+S:      </relDom:infData>
+S:    </extension>
+S:    <trID>
+S:      <clTRID>ABC-12345</clTRID>
+S:      <svTRID>54322-XYZ</svTRID>
+S:    </trID>
+S:  </response>
+S:</epp>]]></artwork>
+       </figure>
+       
+       </section>
+
+
+      </section>
+      <!-- end INFO command -->
+      
+      <section anchor="transferQueryCommand" title="EPP &lt;transfer&gt; Command">
+      
+       <t>This extension defines additional elements for the EPP &lt;transfer&gt; command described in <xref target="RFC5731"/>.  
+       The extension to the EPP &lt;transfer&gt; query command is defined in 
+       <xref target="transferCommand"/> where the &lt;transfer&gt; command MUST contain an "op" attribute with value "query".  
+       The extension to the EPP &lt;transfer&gt; query response is defined in <xref target="transferCommand"/>.</t>
+
+      </section>
+      <!-- end TRANSFER QUERY command -->
+      
+      </section>
+      
+      <section anchor="transformCommands" title="EPP Transform Commands">
+      
+        <t>EPP provides five commands to transform objects: &lt;create&gt; to create an instance of an object, 
+        &lt;delete&gt; to delete an instance of an object, &lt;renew&gt; to extend the validity period of an object,
+        &lt;transfer&gt; to manage object sponsorship changes, and &lt;update&gt; to change information associated 
+        with an object.</t>
+
+      <section anchor="createCommand" title="EPP &lt;create&gt; Command">
+      
+       <t>This extension defines additional elements to extend the EPP
+        &lt;create&gt; command described in <xref target="RFC5731">EPP domain name mapping</xref>.</t>
+        
+       <t>In addition to the EPP command elements described in <xref target="RFC5731"/>, the command MUST 
+       contain an &lt;extension&gt; element.  The &lt;extension&gt; element MUST contain a child 
+       &lt;relDom:create&gt; element to create more than one related domain name in the &lt;create&gt; command.  
+       The &lt;relDom:create&gt; element contains the following child elements:</t>
+       
+      <t><list hangIndent="4" style="hanging">
+          <t hangText="&lt;relDom:domain&gt;">One or more &lt;relDom:domain&gt; elements to 
+          create along with the &lt;domain:name&gt; described in <xref target="RFC5731"/>.  
+          The &lt;domain:ns&gt;, &lt;domain:registrant&gt;, and &lt;domain:contact&gt; 
+          elements in <xref target="RFC5731"/> SHOULD be set on the &lt;relDom:domain&gt; objects by the server.  
+          The &lt;relDom:domain&gt; element contains the following child elements:</t>
+ 
+          <t><list hangIndent="4" style="hanging">
+            <t hangText="&lt;relDom:name&gt;">Element that contains the fully qualified name of the domain object to be created.</t>
+    
+            <t hangText="&lt;relDom:authInfo&gt;">Element that contains authorization information to be 
+            associated with the domain object as described in <xref target="RFC5731"/>.</t>
+
+            <t hangText="&lt;relDom:period&gt;">An OPTIONAL element containing the initial 
+            registration period of the domain object as described in <xref target="RFC5731"/>.  
+            A server MAY define a default initial registration period if not specified by the client.</t>
+
+            <t hangText="&lt;relDom:lang&gt;">An OPTIONAL element containing language tag value, 
+            as defined in IDN Language Tag EPP Extension, for an internationalized domain name (IDN).</t>
+              
+          </list></t>
+
+       </list></t>
+       
+              
+       <figure>
+            <preamble>Example &lt;create&gt; command for three related domain names ("example1.tld", "example2.tld", and "example3.tld") with 
+            the &lt;relDom:create&gt; extension:</preamble>
+
+            <artwork><![CDATA[
+C:<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+C:<epp xmlns="urn:ietf:params:xml:ns:epp-1.0">
+C:  <command>
+C:    <create>
+C:      <domain:create 
+C:        xmlns:domain="urn:ietf:params:xml:ns:domain-1.0">
+C:        <domain:name>example1.tld</domain:name>
+C:        <domain:authInfo>
+C:          <domain:pw>2fooBAR</domain:pw>
+C:        </domain:authInfo>
+C:      </domain:create>
+C:    </create>
+C:    <extension>
+C:      <relDom:create 
+C:        xmlns:relDom=
+C:         "http://www.verisign.com/epp/relatedDomain-1.0">
+C:        <relDom:domain>
+C:          <relDom:name>example2.tld</relDom:name>
+C:          <relDom:authInfo>
+C:            <relDom:pw>relDom123!</relDom:pw>
+C:          </relDom:authInfo>
+C:          <relDom:period unit="y">5</relDom:period>
+C:        </relDom:domain>
+C:        <relDom:domain>
+C:          <relDom:name>example3.tld</relDom:name>
+C:          <relDom:authInfo>
+C:            <relDom:pw>relDom456!</relDom:pw>
+C:          </relDom:authInfo>
+C:          <relDom:period unit="y">5</relDom:period>
+C:        </relDom:domain>
+C:      </relDom:create>
+C:    </extension>
+C:    <clTRID>ABC-12345</clTRID>
+C:  </command>
+C:</epp>]]></artwork>
+       </figure>
+       
+       <t>When an &lt;create&gt; command has been processed successfully, 
+       the EPP &lt;resData&gt; element MUST contain child elements as described in <xref target="RFC5731"/>. 
+       In addition, the EPP &lt;extension&gt; element MUST contain a child &lt;relDom:creData&gt; element.  
+       The &lt;relDom:creData&gt; element contains the following child elements:</t>
+       
+       <t><list hangIndent="4" style="hanging">
+          <t hangText="&lt;relDom:domain&gt;">One or more &lt;relDom:domain&gt; elements created along 
+          with the &lt;domain:name&gt; described in <xref target="RFC5731"/>. The &lt;relDom:domain&gt; element contains the following child elements:</t>
+ 
+          <t><list hangIndent="4" style="hanging">
+            <t hangText="&lt;relDom:name&gt;">Element that contains the fully qualified name of the domain object created.</t>
+    
+            <t hangText="&lt;relDom:crDate&gt;">Element that contains the date and time of domain object creation.</t>
+
+            <t hangText="&lt;relDom:exDate&gt;">An OPTIONAL element that contains the date and time identifying 
+            the end of the domain object's registration period.</t>
+          </list></t>
+
+       </list></t>
+       
+       <figure>
+            <preamble>Example &lt;create&gt; response for three related domain names 
+            ("example1.tld", "example2.tld", and "example3.tld") created with the 
+            &lt;relDom:create&gt; extension:</preamble>
+
+            <artwork><![CDATA[
+S:<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+S:<epp xmlns="urn:ietf:params:xml:ns:epp-1.0">
+S:  <response>
+S:    <result code="1000">
+S:      <msg>Command completed successfully</msg>
+S:    </result>
+S:    <resData>
+S:      <domain:creData 
+S:        xmlns:domain="urn:ietf:params:xml:ns:domain-1.0">
+S:        <domain:name>example1.tld</domain:name>
+S:        <domain:crDate>
+S:          2013-07-10T00:00:00.0000Z</domain:crDate>
+S:        <domain:exDate>
+S:          2018-07-10T00:00:00.0000Z</domain:exDate>
+S:      </domain:creData>
+S:    </resData>
+S:    <extension>
+S:      <relDom:creData 
+S:        xmlns:relDom=
+S:         "http://www.verisign.com/epp/relatedDomain-1.0">
+S:        <relDom:domain>
+S:          <relDom:name>example2.tld</relDom:name>
+S:          <relDom:crDate>
+S:            2013-07-10T00:00:00.0000Z</relDom:crDate>
+S:          <relDom:exDate>
+S:            2018-07-10T00:00:00.0000Z</relDom:exDate>
+S:        </relDom:domain>
+S:        <relDom:domain>
+S:          <relDom:name>example3.tld</relDom:name>
+S:          <relDom:crDate>
+S:            2013-07-10T00:00:00.0000Z</relDom:crDate>
+S:          <relDom:exDate>
+S:            2018-07-10T00:00:00.0000Z</relDom:exDate>
+S:        </relDom:domain>
+S:      </relDom:creData>
+S:    </extension>
+S:    <trID>
+S:      <clTRID>ABC-12345</clTRID>
+S:      <svTRID>54321-XYZ</svTRID>
+S:    </trID>
+S:  </response>
+S:</epp>]]></artwork>
+       </figure>   
+       
+      </section>
+      <!-- end CREATE command -->
+
+      <section anchor="deleteCommand" title="EPP &lt;delete&gt; Command">
+      
+       <t>This extension defines additional elements to extend the EPP
+        &lt;delete&gt; command described in <xref target="RFC5731">EPP domain name mapping</xref>.</t>
+        
+       <t>In addition to the EPP command elements described in <xref target="RFC5731"/>, the command MUST 
+       contain an &lt;extension&gt; element.  The &lt;extension&gt; element MUST contain a child 
+       &lt;relDom:delete&gt; element to delete more than one related domain name in the &lt;delete&gt; command.  
+       The &lt;relDom:delete&gt; element contains the following child elements:</t>
+       
+      <t><list hangIndent="4" style="hanging">
+
+          <t hangText="&lt;relDom:name&gt;">One or more domain names to delete along with the &lt;domain:name&gt; 
+          described in <xref target="RFC5731"/>.</t>
+
+      </list></t>
+       
+              
+       <figure>
+            <preamble>Example &lt;delete&gt; command for three related domain names ("example1.tld", "example2.tld", and "example3.tld") with 
+            the &lt;relDom:delete&gt; extension:</preamble>
+
+            <artwork><![CDATA[
+C:<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+C:<epp xmlns="urn:ietf:params:xml:ns:epp-1.0">
+C:  <command>
+C:    <delete>
+C:      <domain:delete 
+C:        xmlns:domain="urn:ietf:params:xml:ns:domain-1.0">
+C:        <domain:name>example1.tld</domain:name>
+C:      </domain:delete>
+C:    </delete>
+C:    <extension>
+C:      <relDom:delete 
+C:         xmlns:relDom=
+C:          "http://www.verisign.com/epp/relatedDomain-1.0">
+C:        <relDom:name>example2.tld</relDom:name>
+C:        <relDom:name>example3.tld</relDom:name>
+C:      </relDom:delete>
+C:    </extension>
+C:    <clTRID>ABC-12345</clTRID>
+C:  </command>
+C:</epp>]]></artwork>
+       </figure>
+       
+       <t>When an &lt;delete&gt; command has been processed successfully, 
+       the EPP &lt;resData&gt; element MUST contain child elements as described in <xref target="RFC5731"/>. 
+       In addition, the EPP &lt;extension&gt; element MUST contain a child &lt;relDom:delData&gt; element.  
+       The &lt;relDom:delData&gt; element contains the following child elements:</t>
+       
+       <t><list hangIndent="4" style="hanging">
+          <t hangText="&lt;relDom:domain&gt;">One or more &lt;relDom:domain&gt; elements containing the 
+          result of the delete command.  The &lt;relDom:domain&gt; element contains the following child elements:</t>
+ 
+          <t><list hangIndent="4" style="hanging">
+            <t hangText="&lt;relDom:name&gt;">Element that contains the fully qualified name of the domain object.</t>
+    
+            <t hangText="&lt;relDom:result&gt;">Element that contains the result of the delete with the 
+            possible values of "deleted", to indicated that the domain object was immediately deleted, 
+            and "pendingDelete", to indicate that the domain object was updated with the  "pendingDelete" status.</t>
+
+          </list></t>
+
+       </list></t>
+       
+       <figure>
+            <preamble>Example &lt;delete&gt; response for three related domain names 
+            ("example1.tld", "example2.tld", and "example3.tld") deleted with the 
+            &lt;relDom:delete&gt; extension:</preamble>
+
+            <artwork><![CDATA[
+S:<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+S:<epp xmlns="urn:ietf:params:xml:ns:epp-1.0">
+S:  <response>
+S:    <result code="1001">
+S:      <msg>Command completed successfully; action pending</msg>
+S:    </result>
+S:    <extension>
+S:      <relDom:delData 
+S:        xmlns:relDom=
+S:          "http://www.verisign.com/epp/relatedDomain-1.0">
+S:        <relDom:domain>
+S:          <relDom:name>domain1.com</relDom:name>
+S:          <relDom:result>deleted</relDom:result>
+S:        </relDom:domain>
+S:        <relDom:domain>
+S:          <relDom:name>domain2.com</relDom:name>
+S:          <relDom:result>pendingDelete</relDom:result>
+S:        </relDom:domain>
+S:      </relDom:delData>
+S:    </extension>
+S:    <trID>
+S:      <clTRID>ABC-12345</clTRID>
+S:      <svTRID>54321-XYZ</svTRID>
+S:    </trID>
+S:  </response>
+S:</epp>]]></artwork>
+       </figure>
+         
+      </section>
+      <!-- end DELETE command -->
+
+      <section anchor="renewCommand" title="EPP &lt;renew&gt; Command">
+      
+       <t>This extension defines additional elements to extend the EPP
+        &lt;renew&gt; command described in <xref target="RFC5731">EPP domain name mapping</xref>.</t>
+        
+       <t>In addition to the EPP command elements described in <xref target="RFC5731"/>, the command MUST 
+       contain an &lt;extension&gt; element.  The &lt;extension&gt; element MUST contain a child 
+       &lt;relDom:renew&gt; element to renew more than one related domain name in the &lt;renew&gt; command.  
+       The &lt;relDom:renew&gt; element contains the following child elements:</t>
+       
+      <t><list hangIndent="4" style="hanging">
+          <t hangText="&lt;relDom:domain&gt;">One or more &lt;relDom:domain&gt; elements to 
+          renew along with the &lt;domain:name&gt; described in <xref target="RFC5731"/>.  
+          The &lt;relDom:domain&gt; element contains the following child elements:</t>
+ 
+          <t><list hangIndent="4" style="hanging">
+            <t hangText="&lt;relDom:name&gt;">Element that contains the fully qualified name 
+            of the domain object to be renewed.</t>
+    
+            <t hangText="&lt;relDom:currExpDate&gt;">Element that contains the date on which the current validity 
+            period ends as described in <xref target="RFC5731"/>.</t>
+
+            <t hangText="&lt;relDom:period&gt;">An OPTIONAL element that contains the number of units to be added 
+            to the registration period of the domain object as described in <xref target="RFC5731"/>.  
+            The number of units available MAY be subject to limits imposed by the server.</t>
+
+          </list></t>
+
+       </list></t>
+       
+              
+       <figure>
+            <preamble>Example &lt;renew&gt; command for three related domain names ("example1.tld", "example2.tld", and "example3.tld") with 
+            the &lt;relDom:renew&gt; extension:</preamble>
+
+            <artwork><![CDATA[
+C:<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+C:<epp xmlns="urn:ietf:params:xml:ns:epp-1.0">
+C:  <command>
+C:    <renew>
+C:      <domain:renew 
+C:        xmlns:domain="urn:ietf:params:xml:ns:domain-1.0">
+C:        <domain:name>example1.tld</domain:name>
+C:        <domain:curExpDate>2013-07-10</domain:curExpDate>
+C:        <domain:period unit="y">5</domain:period>
+C:      </domain:renew>
+C:    </renew>
+C:    <extension>
+C:      <relDom:renew 
+C:        xmlns:relDom=
+C:          "http://www.verisign.com/epp/relatedDomain-1.0">
+C:        <relDom:domain>
+C:          <relDom:name>example2.tld</relDom:name>
+C:          <relDom:curExpDate>2013-07-10</relDom:curExpDate>
+C:          <relDom:period unit="y">5</relDom:period>
+C:        </relDom:domain>
+C:        <relDom:domain>
+C:          <relDom:name>example3.tld</relDom:name>
+C:          <relDom:curExpDate>2013-07-10</relDom:curExpDate>
+C:          <relDom:period unit="y">5</relDom:period>
+C:        </relDom:domain>
+C:      </relDom:renew>
+C:    </extension>
+C:    <clTRID>ABC-12345</clTRID>
+C:  </command>
+C:</epp>]]></artwork>
+       </figure>
+       
+       <t>When an &lt;renew&gt; command has been processed successfully, 
+       the EPP &lt;resData&gt; element MUST contain child elements as described in <xref target="RFC5731"/>. 
+       In addition, the EPP &lt;extension&gt; element MUST contain a child &lt;relDom:renData&gt; element.  
+       The &lt;relDom:renData&gt; element contains the following child elements:</t>
+       
+       <t><list hangIndent="4" style="hanging">
+          <t hangText="&lt;relDom:domain&gt;">One or more &lt;relDom:domain&gt; elements renewed along 
+          with the &lt;domain:name&gt; described in <xref target="RFC5731"/>. The &lt;relDom:domain&gt; element contains the following child elements:</t>
+ 
+          <t><list hangIndent="4" style="hanging">
+            <t hangText="&lt;relDom:name&gt;">Element that contains the fully qualified name of the domain object renewed.</t>
+    
+            <t hangText="&lt;relDom:exDate&gt;">An OPTIONAL element that contains the date and time identifying 
+            the end of the domain object's registration period.</t>
+          </list></t>
+
+       </list></t>
+       
+       <figure>
+            <preamble>Example &lt;renew&gt; response for three related domain names 
+            ("example1.tld", "example2.tld", and "example3.tld") renewed with the 
+            &lt;relDom:renew&gt; extension:</preamble>
+
+            <artwork><![CDATA[
+S:<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+S:<epp xmlns="urn:ietf:params:xml:ns:epp-1.0">
+S:  <response>
+S:    <result code="1000">
+S:      <msg>Command completed successfully</msg>
+S:    </result>
+S:    <resData>
+S:      <domain:renData 
+S:        xmlns:domain="urn:ietf:params:xml:ns:domain-1.0">
+S:        <domain:name>example1.com</domain:name>
+S:        <domain:exDate>2018-07-10T00:00:00.0000Z
+S:        </domain:exDate>
+S:      </domain:renData>
+S:    </resData>
+S:    <extension>
+S:      <relDom:renData 
+S:        xmlns:relDom=
+S:           "http://www.verisign.com/epp/relatedDomain-1.0">
+S:        <relDom:domain>
+S:          <relDom:name>example2.com</relDom:name>
+S:          <relDom:exDate>2018-07-10T00:00:00.0000Z
+S:          </relDom:exDate>
+S:        </relDom:domain>
+S:        <relDom:domain>
+S:          <relDom:name>example3.com</relDom:name>
+S:          <relDom:exDate>2018-07-10T00:00:00.0000Z
+S:          </relDom:exDate>
+S:        </relDom:domain>
+S:      </relDom:renData>
+S:    </extension>
+S:    <trID>
+S:      <clTRID>ABC-12345</clTRID>
+S:      <svTRID>54321-XYZ</svTRID>
+S:    </trID>
+S:  </response>
+S:</epp>]]></artwork>
+       </figure>   
+       
+      </section>
+      <!-- end RENEW command -->
+      
+      <section anchor="transferCommand" title="EPP &lt;transfer&gt; Command">
+      
+       <t>This extension defines additional elements to extend the EPP
+        &lt;transfer&gt; command described in <xref target="RFC5731">EPP domain name mapping</xref>.</t>
+        
+       <t>In addition to the EPP command elements described in <xref target="RFC5731"/>, the command MUST 
+       contain an &lt;extension&gt; element.  The &lt;extension&gt; element MUST contain a child 
+       &lt;relDom:transfer&gt; element to transfer more than one related domain name in the &lt;transfer&gt; command.  
+       The &lt;relDom:transfer&gt; element contains the following child elements:</t>
+       
+      <t><list hangIndent="4" style="hanging">
+          <t hangText="&lt;relDom:domain&gt;">One or more &lt;relDom:domain&gt; elements to 
+          transfer along with the &lt;domain:name&gt; described in <xref target="RFC5731"/>.  
+          The &lt;relDom:domain&gt; element contains the following child elements:</t>
+ 
+          <t><list hangIndent="4" style="hanging">
+            <t hangText="&lt;relDom:name&gt;">Element that contains the fully qualified name 
+            of the domain object.</t>
+    
+            <t hangText="&lt;relDom:authInfo&gt;">An OPTIONAL element that contains authorization information associated with the 
+            domain object as described in <xref target="RFC5731"/>.</t>
+
+            <t hangText="&lt;relDom:period&gt;">An OPTIONAL element that contains the number of units to be added to the 
+            registration period of the domain object as described in <xref target="RFC5731"/>.  This element can only be 
+            used when a transfer is requested, and it MUST be ignored if used otherwise.  The number of units available 
+            MAY be subject to limits imposed by the server.</t>
+
+          </list></t>
+
+       </list></t>
+       
+              
+       <figure>
+            <preamble>Example &lt;transfer&gt; command for three related domain names ("example1.tld", "example2.tld", and "example3.tld") with 
+            the &lt;relDom:transfer&gt; extension:</preamble>
+
+            <artwork><![CDATA[
+C:<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+C:<epp xmlns="urn:ietf:params:xml:ns:epp-1.0">
+C:  <command>
+C:    <transfer op="request">
+C:      <domain:transfer 
+C:        xmlns:domain="urn:ietf:params:xml:ns:domain-1.0">
+C:        <domain:name>example1.tld</domain:name>
+C:        <domain:period unit="y">1</domain:period>
+C:        <domain:authInfo>
+C:          <domain:pw>2fooBAR</domain:pw>
+C:        </domain:authInfo>
+C:      </domain:transfer>
+C:    </transfer>
+C:    <extension>
+C:      <relDom:transfer 
+C:        xmlns:relDom=
+C:          "http://www.verisign.com/epp/relatedDomain-1.0">
+C:        <relDom:domain>
+C:          <relDom:name>example2.tld</relDom:name>
+C:          <relDom:authInfo>
+C:            <relDom:pw>relDom123!</relDom:pw>
+C:          </relDom:authInfo>
+C:          <relDom:period unit="y">1</relDom:period>
+C:        </relDom:domain>
+C:        <relDom:domain>
+C:          <relDom:name>example3.tld</relDom:name>
+C:          <relDom:authInfo>
+C:            <relDom:pw>relDom123!</relDom:pw>
+C:          </relDom:authInfo>
+C:        </relDom:domain>
+C:      </relDom:transfer>
+C:    </extension>
+C:    <clTRID>ABC-12345</clTRID>
+C:  </command>
+C:</epp>]]></artwork>
+       </figure>
+       
+       <t>When an &lt;transfer&gt; command has been processed successfully, 
+       the EPP &lt;resData&gt; element MUST contain child elements as described in <xref target="RFC5731"/>. 
+       In addition, the EPP &lt;extension&gt; element MUST contain a child &lt;relDom:trnData&gt; element.  
+       The &lt;relDom:trnData&gt; element contains the following child elements:</t>
+       
+       <t><list hangIndent="4" style="hanging">
+          <t hangText="&lt;relDom:domain&gt;">One or more &lt;relDom:domain&gt; elements associated with 
+          the transfer along with the &lt;domain:name&gt; described in <xref target="RFC5731"/>.  
+          The &lt;relDom:domain&gt; element contains the following child elements:</t>
+ 
+          <t><list hangIndent="4" style="hanging">
+            <t hangText="&lt;relDom:name&gt;">Element that contains the fully qualified name 
+            of the domain object.</t>
+    
+            <t hangText="&lt;relDom:trStatus&gt;">Element that contains the state of the most recent transfer request.</t>
+
+            <t hangText="&lt;relDom:reID&gt;">Element that contains the identifier of the client that requested the object transfer.</t>
+
+            <t hangText="&lt;relDom:reDate&gt;">Element that contains the date and time that the transfer was requested.</t>
+
+            <t hangText="&lt;relDom:acID&gt;">Element that contains the identifier of the client that 
+            SHOULD act upon a PENDING transfer request.  For all other status types, the value 
+            identifies the client that took the indicated action.</t>
+
+            <t hangText="&lt;relDom:acDate&gt;">Element that contains the date and time of a required or completed 
+            request as described in <xref target="RFC5731"/>.  For a PENDING request, the value identifies the 
+            date and time by which a response is required before an automated response action will be 
+            taken by the server.  For all other status types, the value identifies the date and time 
+            when the request was completed.</t>
+
+            <t hangText="&lt;relDom:exDate&gt;">An OPTIONAL element that contains the date and time 
+            identifying the end of the domain object's registration period.</t>
+
+          </list></t>
+
+       </list></t>
+       
+       <figure>
+            <preamble>Example &lt;transfer&gt; response for three related domain names 
+            ("example1.tld", "example2.tld", and "example3.tld"):</preamble>
+
+            <artwork><![CDATA[
+S:<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+S:<epp xmlns="urn:ietf:params:xml:ns:epp-1.0">
+S:  <response>
+S:    <result code="1000">
+S:      <msg>Command completed successfully</msg>
+S:    </result>
+S:    <resData>
+S:      <domain:trnData 
+S:        xmlns:domain="urn:ietf:params:xml:ns:domain-1.0">
+S:        <domain:name>example1.tld</domain:name>
+S:        <domain:trStatus>pending</domain:trStatus>
+S:        <domain:reID>ClientX</domain:reID>
+S:        <domain:reDate>2013-07-10T00:00:00.0000Z</domain:reDate>
+S:        <domain:acID>ClientY</domain:acID>
+S:        <domain:acDate>2013-07-10T00:00:00.0000Z</domain:acDate>
+S:        <domain:exDate>2014-07-10T00:00:00.0000Z</domain:exDate>
+S:      </domain:trnData>
+S:    </resData>
+S:    <extension>
+S:      <relDom:trnData 
+S:        xmlns:relDom=
+S:          "http://www.verisign.com/epp/relatedDomain-1.0">
+S:        <relDom:domain>
+S:          <relDom:name>example2.tld</relDom:name>
+S:          <relDom:trStatus>pending</relDom:trStatus>
+S:          <relDom:reID>ClientX</relDom:reID>
+S:          <relDom:reDate>2013-07-10T00:00:00.0000Z
+S:          </relDom:reDate>
+S:          <relDom:acID>ClientY</relDom:acID>
+S:          <relDom:acDate>2013-07-10T00:00:00.0000Z
+S:          </relDom:acDate>
+S:          <relDom:exDate>2014-07-10T00:00:00.0000Z
+S:          </relDom:exDate>
+S:        </relDom:domain>
+S:        <relDom:domain>
+S:          <relDom:name>example3.tld</relDom:name>
+S:          <relDom:trStatus>pending</relDom:trStatus>
+S:          <relDom:reID>ClientX</relDom:reID>
+S:          <relDom:reDate>2013-07-10T00:00:00.0000Z
+S:          </relDom:reDate>
+S:          <relDom:acID>ClientY</relDom:acID>
+S:          <relDom:acDate>2013-07-10T00:00:00.0000Z
+S:          </relDom:acDate>
+S:          <relDom:exDate>2014-07-10T00:00:00.0000Z
+S:          </relDom:exDate>
+S:        </relDom:domain>
+S:      </relDom:trnData>
+S:    </extension>
+S:    <trID>
+S:      <clTRID>ABC-12345</clTRID>
+S:      <svTRID>54321-XYZ</svTRID>
+S:    </trID>
+S:  </response>
+S:</epp>
+]]></artwork>
+       </figure>   
+       
+      </section>
+      <!-- end TRANSFER command -->
+      
+      <section anchor="updateCommand" title="EPP &lt;update&gt; Command">
+      
+       <t>This extension defines additional elements to extend the EPP
+        &lt;update&gt; command described in <xref target="RFC5731">EPP domain name mapping</xref>.</t>
+        
+       <t>In addition to the EPP command elements described in <xref target="RFC5731"/>, the command MUST 
+       contain an &lt;extension&gt; element.  The &lt;extension&gt; element MUST contain a child 
+       &lt;relDom:update&gt; element to update more than one related domain name in the &lt;update&gt; command.  
+       The &lt;relDom:update&gt; element contains the following child elements:</t>
+       
+       <t><list hangIndent="4" style="hanging">
+         <t hangText="&lt;relDom:name&gt;">One or more domain names to update along with the &lt;domain:name&gt; 
+          described in <xref target="RFC5731"/>.</t>
+    
+       </list></t>
+       
+              
+       <figure>
+            <preamble>Example &lt;update&gt; command for three related domain names ("example1.tld", "example2.tld", and "example3.tld") with 
+            the &lt;relDom:update&gt; extension:</preamble>
+
+            <artwork><![CDATA[
+C:<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+C:<epp xmlns="urn:ietf:params:xml:ns:epp-1.0">
+C:  <command>
+C:    <update>
+C:      <domain:update 
+C:        xmlns:domain="urn:ietf:params:xml:ns:domain-1.0">
+C:        <domain:name>example1.tld</domain:name>
+C:        <domain:add>
+C:          <domain:ns>
+C:            <domain:hostObj>ns1.example.com
+C:            </domain:hostObj>
+C:          </domain:ns>
+C:          <domain:status s="clientHold"/>
+C:        </domain:add>
+C:        <domain:rem>
+C:          <domain:ns>
+C:            <domain:hostObj>ns2.example.com
+C:            </domain:hostObj>
+C:          </domain:ns>
+C:          <domain:status s="clientDeleteProhibited"/>
+C:        </domain:rem>
+C:        <domain:chg>
+C:          <domain:registrant>jd1234</domain:registrant>
+C:          <domain:authInfo>
+C:            <domain:pw>2fooBAR</domain:pw>
+C:          </domain:authInfo>
+C:        </domain:chg>
+C:      </domain:update>
+C:    </update>
+C:    <extension>
+C:      <relDom:update 
+C:         xmlns:relDom=
+C:          "http://www.verisign.com/epp/relatedDomain-1.0">
+C:        <relDom:name>example2.tld</relDom:name>
+C:        <relDom:name>example3.tld</relDom:name>
+C:      </relDom:update>
+C:    </extension>
+C:    <clTRID>ABC-12345-XYZ</clTRID>
+C:  </command>
+C:</epp>]]></artwork>
+       </figure>
+       
+       <t>This extension does not define any extension to the response of an &lt;update&gt; domain command.  
+       After processing the command, the server replies with a standard EPP response as 
+       defined in <xref target="RFC5731"/>.</t>
+       
+        
+      </section>
+      <!-- end UPDATE command -->
+
+    </section>
+      
+    </section>
+
+    <!-- EPP command mapping -->
+
+    <section anchor="syntax" title="Formal Syntax">
+    
+      <t>One schema is presented here that is the EPP Related Domain Extension
+      schema.</t>
+      
+      <t>The formal
+      syntax presented here is a complete schema representation of the object
+      mapping suitable for automated validation of EPP XML instances. The
+      BEGIN and END tags are not part of the schema; they are used to note the
+      beginning and ending of the schema for URI registration purposes.</t>
+
+    <section title="Related Domain Extension Schema">
+
+      <figure>
+        <artwork><![CDATA[
+BEGIN
+<?xml version="1.0" encoding="UTF-8"?>
+<schema xmlns:relDom=
+   "http://www.verisign.com/epp/relatedDomain-1.0" 
+   xmlns="http://www.w3.org/2001/XMLSchema" 
+   xmlns:eppcom="urn:ietf:params:xml:ns:eppcom-1.0" 
+   targetNamespace="http://www.verisign.com/epp/relatedDomain-1.0" 
+   elementFormDefault="qualified">
+   <annotation>
+      <documentation>
+         Extensible Provisioning Protocol v1.0 
+         Related Domain extension
+       </documentation>
+   </annotation>
+   <!--
+   Import common element types.
+   -->
+   <import namespace="urn:ietf:params:xml:ns:eppcom-1.0" 
+      schemaLocation="eppcom-1.0.xsd"/>
+   <!-- 
+   Related Domain info command extension root element
+   -->
+   <element name="info" type="relDom:infoType"/>
+
+   <!--
+   Info type attribute values
+   -->
+   <simpleType name="infoTypeType">
+      <restriction base="string">
+         <enumeration value="domain"/>
+         <enumeration value="related"/>
+      </restriction>
+   </simpleType>
+   
+   <!-- 
+   Related Domain Info type
+   -->
+   <complexType name="infoType">
+      <attribute name="type" type="relDom:infoTypeType" 
+         default="domain"/>
+   </complexType>
+   
+   <!-- 
+   Related Domain info response extension root element
+   -->
+   <element name="infData" type="relDom:infDataType"/>
+   <complexType name="infDataType">
+      <sequence>
+         <element name="group" 
+           type="relDom:relatedDomainGroupType" 
+           maxOccurs="unbounded"/>
+      </sequence>
+   </complexType>
+   <simpleType name="fieldNameType">
+      <restriction base="normalizedString">
+         <minLength value="1"/>
+         <maxLength value="64"/>
+      </restriction>
+   </simpleType>
+   <!-- 
+   Field that needs to be synchronized.
+   -->
+   <complexType name="fieldType">
+      <attribute name="name" type="relDom:fieldNameType" 
+         use="required"/>
+      <attribute name="inSync" type="boolean" 
+         use="required"/>
+   </complexType>
+   <!-- 
+   Related Domain group types
+   -->
+   <simpleType name="groupType">
+      <restriction base="string">
+         <enumeration value="tld"/>
+         <enumeration value="variant"/>
+      </restriction>
+   </simpleType>
+   <!--
+   Fields that need to be synchronized
+   -->
+   <complexType name="fieldsType">
+      <sequence>
+         <element name="field" type="relDom:fieldType" 
+            maxOccurs="unbounded"/>
+      </sequence>
+      <attribute name="inSync" use="required"/>
+   </complexType>
+   <!-- 
+   Domain names that are registered or available.
+   -->
+   <complexType name="domainListType">
+      <sequence>
+         <element name="name" type="eppcom:labelType" 
+            maxOccurs="unbounded"/>
+      </sequence>
+   </complexType>
+   <!--
+   Related Domain Group
+   -->
+   <complexType name="relatedDomainGroupType">
+      <sequence>
+         <element name="fields" type="relDom:fieldsType"/>
+         <element name="registered" 
+           type="relDom:domainListType" 
+           minOccurs="0"/>
+         <element name="available" 
+           type="relDom:domainListType" 
+           minOccurs="0"/>
+      </sequence>
+      <attribute name="type" type="relDom:groupType" 
+         use="required"/>
+   </complexType>
+   <!--
+   Related Domain Auth Info Type
+   -->
+   <complexType name="authInfoType">
+      <choice>
+         <element name="pw" 
+           type="eppcom:pwAuthInfoType"/>
+         <element name="ext" 
+           type="eppcom:extAuthInfoType"/>
+      </choice>
+   </complexType>
+   <!--
+   Related Domain Period Type
+   -->
+   <complexType name="periodType">
+      <simpleContent>
+         <extension base="relDom:pLimitType">
+            <attribute name="unit" 
+              type="relDom:pUnitType" 
+              use="required"/>
+         </extension>
+      </simpleContent>
+   </complexType>
+   <!--
+   Related Domain Period Limit Type
+   -->
+   <simpleType name="pLimitType">
+      <restriction base="unsignedShort">
+         <minInclusive value="1"/>
+         <maxInclusive value="99"/>
+      </restriction>
+   </simpleType>
+   <!--
+   Related Domain Period Unit Type
+   -->
+   <simpleType name="pUnitType">
+      <restriction base="token">
+         <enumeration value="y"/>
+         <enumeration value="m"/>
+      </restriction>
+   </simpleType>
+   <!--
+   Related Domain Create Request Type
+   -->
+   <complexType name="createRequestType">
+      <sequence>
+         <element name="name" 
+           type="eppcom:labelType"/>
+         <element name="authInfo" 
+           type="relDom:authInfoType"/>
+         <element name="period" 
+           type="relDom:periodType" 
+            minOccurs="0"/>
+         <element name="lang" 
+           type="language" 
+           minOccurs="0"/>
+      </sequence>
+   </complexType>
+   <!--
+   Related Domain Create Request element
+   -->
+   <element name="create">
+      <complexType>
+         <sequence>
+            <element name="domain" 
+              type="relDom:createRequestType" 
+              maxOccurs="unbounded"/>
+         </sequence>
+      </complexType>
+   </element>
+   <!--
+   Related Domain Create Response type
+   -->
+   <complexType name="creDataType">
+      <sequence>
+         <element name="name" 
+           type="eppcom:labelType"/>
+         <element name="crDate" 
+           type="dateTime"/>
+         <element name="exDate" 
+           type="dateTime" 
+           minOccurs="0"/>
+      </sequence>
+   </complexType>
+   <!--
+   Related Domain Create Request element
+   -->
+   <element name="creData">
+      <complexType>
+         <sequence>
+            <element name="domain" 
+              type="relDom:creDataType" 
+              maxOccurs="unbounded"/>
+         </sequence>
+      </complexType>
+   </element>
+   <!--
+   Related Domain Delete Request element
+   -->
+   <element name="delete" 
+     type="relDom:domainListType"/>
+   <simpleType name="deleteResultType">
+      <restriction base="string">
+         <enumeration value="deleted"/>
+         <enumeration value="pendingDelete"/>
+      </restriction>
+   </simpleType>
+   <!--
+   Related Domain Delete Response type
+   -->
+   <complexType name="delDataType">
+      <sequence>
+         <element name="name" 
+           type="eppcom:labelType"/>
+         <element name="result" 
+           type="relDom:deleteResultType"/>
+      </sequence>
+   </complexType>
+   <!--
+   Related Domain Delete Response element
+   -->
+   <element name="delData">
+      <complexType>
+         <sequence>
+            <element name="domain" 
+              type="relDom:delDataType" 
+              maxOccurs="unbounded"/>
+         </sequence>
+      </complexType>
+   </element>
+   <!--
+   Related Domain Update Request element
+   -->
+   <element name="update" type="relDom:domainListType"/>
+   <!--
+   Related Domain Renew type
+   -->
+   <complexType name="renewType">
+      <sequence>
+         <element name="name" 
+           type="eppcom:labelType"/>
+         <element name="curExpDate" 
+           type="date"/>
+         <element name="period" 
+           type="relDom:periodType" 
+           minOccurs="0"/>
+      </sequence>
+   </complexType>
+   <!--
+   Related Domain Renew element
+   -->
+   <element name="renew">
+      <complexType>
+         <sequence>
+            <element name="domain" 
+              type="relDom:renewType" 
+              maxOccurs="unbounded"/>
+         </sequence>
+      </complexType>
+   </element>
+   <!--
+   Related Domain Renew Data type
+   -->
+   <complexType name="renDataType">
+      <sequence>
+         <element name="name" 
+           type="eppcom:labelType"/>
+         <element name="exDate" 
+           type="dateTime"/>
+      </sequence>
+   </complexType>
+   <!--
+   Related Domain Renew Data element
+   -->
+   <element name="renData">
+      <complexType>
+         <sequence>
+            <element name="domain" 
+              type="relDom:renDataType" 
+              maxOccurs="unbounded"/>
+         </sequence>
+      </complexType>
+   </element>
+   <!--
+   Related Domain Transfer type
+   -->
+   <complexType name="transferType">
+      <sequence>
+         <element name="name" 
+           type="eppcom:labelType"/>
+         <element name="authInfo" 
+           type="relDom:authInfoType" 
+           minOccurs="0"/>
+         <element name="period" 
+           type="relDom:periodType" 
+           minOccurs="0"/>
+      </sequence>
+   </complexType>
+   <!--
+   Related Domain Transfer element
+   -->
+   <element name="transfer">
+      <complexType>
+         <sequence>
+            <element name="domain" 
+              type="relDom:transferType" 
+              maxOccurs="unbounded"/>
+         </sequence>
+      </complexType>
+   </element>
+   <!--
+   Related Domain Transfer Data Type
+   -->
+   <complexType name="trnDataType">
+      <sequence>
+         <element name="name" 
+           type="eppcom:labelType"/>
+         <element name="trStatus" 
+           type="eppcom:trStatusType"/>
+         <element name="reID" 
+           type="eppcom:clIDType"/>
+         <element name="reDate" 
+           type="dateTime"/>
+         <element name="acID" 
+           type="eppcom:clIDType"/>
+         <element name="acDate" 
+           type="dateTime"/>
+         <element name="exDate" 
+           type="dateTime" minOccurs="0"/>
+      </sequence>
+   </complexType>
+   <!--
+   Related Domain Transfer Data element
+   -->
+   <element name="trnData">
+      <complexType>
+         <sequence>
+            <element name="domain" 
+              type="relDom:trnDataType" 
+              maxOccurs="unbounded"/>
+         </sequence>
+      </complexType>
+   </element>
+</schema>
+END]]></artwork>
+      </figure>
+      </section>
+    </section>
+   
+   <section title="Change History">
+    <section title="Version 01" anchor="version-01">
+      <t><list style="numbers">
+        <t>Initial version of Internet-Draft format of the 
+        Related Domain EPP Extension, version 1.2.</t>
+      </list></t>
+    </section>
+   </section>
+    
+
+    <section anchor="Security" title="Security Considerations">
+      <t>The mapping extensions described in this document do not provide any
+      security services beyond those described by <xref
+      target="RFC5730">EPP</xref> and protocol layers used by EPP. The security
+      considerations described in these other specifications apply to this
+      specification as well.</t>
+    </section>
+
+  </middle>
+
+  <!--  *****BACK MATTER ***** -->
+
+  <back>
+    <!-- References split into informative and normative -->
+
+    <!-- There are 2 ways to insert reference entries from the citation libraries:
+     1. define an ENTITY at the top, and use "ampersand character"RFC2629; here (as shown)
+     2. simply use a PI "less than character"?rfc include="reference.RFC.2119.xml"?> here
+        (for I-Ds: include="reference.I-D.narten-iana-considerations-rfc2434bis.xml")
+
+     Both are cited textually in the same manner: by using xref elements.
+     If you use the PI option, xml2rfc will, by default, try to find included files in the same
+     directory as the including file. You can also define the XML_LIBRARY environment variable
+     with a value containing a set of directories to search.  These can be either in the local
+     filing system or remote ones accessed by http (http://domain/dir/... ).-->
+
+    <references title="Normative References">
+       
+      &RFC2119;
+
+      &RFC5730;
+
+      &RFC5731;
+
+    </references>
+  </back>
+
+  <!-- vim: set ts=2 sw=2 expandtab: -->
+</rfc>

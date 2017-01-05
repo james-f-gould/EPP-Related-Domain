@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<epp xmlns="urn:ietf:params:xml:ns:epp-1.0">
+  <command>
+    <info>
+      <domain:info 
+        xmlns:domain="urn:ietf:params:xml:ns:domain-1.0">
+        <domain:name>xn--test.tld3</domain:name>
+      </domain:info>
+    </info>
+    <extension>
+      <relDom:info 
+        xmlns:relDom=
+          "http://www.verisign.com/epp/relatedDomain-1.0" 
+        type="related"/>
+    </extension>
+    <clTRID>ABC-12345</clTRID>
+  </command>
+</epp>
