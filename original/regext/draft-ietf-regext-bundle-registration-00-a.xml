@@ -1,0 +1,1090 @@
+<?xml version="1.0"	encoding="US-ASCII"?>
+
+<!DOCTYPE rfc SYSTEM "rfc2629.dtd" [
+<!ENTITY RFC2119 SYSTEM	"http://xml.resource.org/public/rfc/bibxml/reference.RFC.2119.xml">
+<!ENTITY RFC3688 SYSTEM	"http://xml.resource.org/public/rfc/bibxml/reference.RFC.3688.xml">
+<!ENTITY RFC4290 SYSTEM	"http://xml.resource.org/public/rfc/bibxml/reference.RFC.4290.xml">
+<!ENTITY RFC5730 SYSTEM	"http://xml.resource.org/public/rfc/bibxml/reference.RFC.5730.xml">
+<!ENTITY RFC5731 SYSTEM	"http://xml.resource.org/public/rfc/bibxml/reference.RFC.5731.xml">
+<!ENTITY RFC5890 SYSTEM	"http://xml.resource.org/public/rfc/bibxml/reference.RFC.5890.xml">
+<!ENTITY RFC5891 SYSTEM	"http://xml.resource.org/public/rfc/bibxml/reference.RFC.5891.xml">
+<!ENTITY RFC5892 SYSTEM	"http://xml.resource.org/public/rfc/bibxml/reference.RFC.5892.xml">
+]>
+
+<?xml-stylesheet type='text/xsl' href='rfc2629.xslt'?>
+<?rfc strict="yes"?>
+<?rfc toc="yes"?>
+<?rfc tocdepth="4"?>
+<?rfc symrefs="yes"?>
+<?rfc sortrefs="yes" ?>
+<?rfc compact="yes"	?>
+<?rfc subcompact="no" ?>
+
+<rfc category="std"	docName="draft-ietf-regext-bundling-registration-00" ipr="pre5378Trust200902">
+  <!-- category	values:	std, bcp, info,	exp, and historic -->
+
+  <front>
+	<title abbrev="EPP bundled names Mapping">
+Extensible Provisioning	Protocol (EPP) Domain Name Mapping Extension for Bundling Registration
+	</title>
+
+ <author	fullname="Ning Kong" initials="N" surname="Kong">
+	  <organization>CNNIC</organization>
+	  <address>
+	  <postal>
+		<street>4 South	4th	Street,Zhongguancun,Haidian	District</street>
+		<city>Beijing</city>
+		<region>Beijing</region>
+		<code>100190</code>
+		<country>China</country>
+	  </postal>
+	  <phone>+86 10	5881 3147</phone>
+	  <email>nkong@cnnic.cn</email>
+	  </address>
+	</author>
+	
+		<author	fullname="Jiankang Yao" initials="J." surname="Yao" role="editor">
+	  <organization>CNNIC</organization>
+	  <address>
+	  <postal>
+		<street>4 South	4th	Street,Zhongguancun,Haidian	District</street>
+		<city>Beijing</city>
+		<region>Beijing</region>
+		<code>100190</code>
+		<country>China</country>
+	  </postal>
+	  <phone>+86 10	5881 3007</phone>
+	  <email>yaojk@cnnic.cn</email>
+	  </address>
+	</author>
+	
+	
+	<author fullname="Xiaodong	Li"	initials="X" surname="Li">
+	  <organization>CNNIC</organization>
+	  <address>
+	  <postal>
+		<street>4 South	4th	Street,Zhongguancun,Haidian	District</street>
+		<city>Beijing</city>
+		<region>Beijing</region>
+		<code>100190</code>
+		<country>China</country>
+	  </postal>
+	  <phone>+86 10	5881 3020</phone>
+	  <email>xl@cnnic.cn</email>
+	  </address>
+	</author>
+	
+	
+	 
+	<author	fullname="Wil Tan" initials="W"	surname="Tan">
+	  <organization>Cloud Registry</organization>
+	  <address>
+	  <postal>
+		<street>Suite 32 Seabridge House, 377 Kent St</street>
+		<city>Sydney</city>
+		<region>NSW</region>
+		<code>2000</code>
+		<country>Australia</country>
+	  </postal>
+	  <phone>+61 414 710899</phone>
+	  <email>wil@cloudregistry.net</email>
+	  </address>
+	</author>
+	
+	
+		<author	fullname="Jiagui Xie" initials="J" surname="Xie">
+	  <organization></organization>
+	  <address>
+
+	  <email>jiagui1984@163.com</email>
+	  </address>
+	</author>
+
+	<date month="June" year="2016" />
+
+	<area>Internet</area>
+
+	<workgroup>Internet	Engineering	Task Force</workgroup>
+
+	<keyword>epp bundled names mapping extension</keyword>
+
+	<abstract>
+	  <t>
+This document describes	an extension of	Extensible Provisioning	Protocol (EPP) domain name mapping
+for	the	provisioning and management	of bundling registration of domain names. Specified in
+XML, this mapping extends the EPP domain name mapping to provide additional	features required for
+the	provisioning of	bundled domain names.
+	  </t>
+	</abstract>
+  </front>
+
+  <middle>
+	<section title="Introduction">
+	  <t>
+	  Bundled domain names are those who share the same TLD but whose second level labels are 
+	  variants, or those who has identical second
+	  level labels for which certain parameters are shared in different TLDs.
+	  For example, Public Interest Registry, request to implement technical bundling of 
+	  second level domains for .NGO and .ONG. So we have two kinds of bundled domain names. First one is 
+in the form of "V-label.TLD" in which the second level labels (V-label) are variants sharing the same TLD; 
+Second one is 
+in the form of "LABEL.V-tld" in which the second level labels(LABEL) are same with the different TLDs (V-tld); 	  </t>
+
+
+ <t>	  
+For the name variants, some registries adopt the policy that variant IDNs	
+which are identified as
+equivalent are allocated or	delegated to the same registrant. For example, the specified
+registration policy	of Chinese Domain Name (CDN) is	that a registrant can apply	an original	CDN	in
+any	forms: Simplified Chinese (SC) form, Traditional Chinese (TC) form,	or other variant forms,
+then the corresponding variant CDN in SC form and that in TC form will also	be delegated to	the
+same registrant. All variant names in the same TLD contain same	attributes.
+	  </t>
+	  
+	  
+	  	  <t>
+The basic Extensible Provisioning Protocol (EPP)	domain name	mapping
+<xref target="RFC5731"></xref> provides the domain name registration one by one. It does not specify how to register
+the bindled names which share the same attributes.
+	  </t>
+	  
+	  
+	  <t>
+In order to	meet above requirements	of the bundled names registration, this document describes an
+extension of the EPP domain name mapping
+<xref target="RFC5731"></xref> for the provisioning	and	management of bundled names.This document
+is specified using the Extensible Markup Language (XML)	1.0	as described in
+<xref target="W3C.REC-xml-20040204"></xref>	and	XML	Schema notation	as described in
+<xref target="W3C.REC-xmlschema-1-20041028"></xref>	and
+<xref target="W3C.REC-xmlschema-2-20041028"></xref>.
+	  </t>
+	  <t>
+The	EPP	core protocol specification	<xref target="RFC5730"></xref> provides	a complete description
+of EPP command and response	structures.	A thorough understanding of	the	base protocol specification
+is necessary to	understand the extension of	mapping	described in this document.
+	  </t>
+	  <t>
+This document uses lots	of the concepts	of the IDN,	so a thorough understanding	of the IDNs	for
+Application	(IDNA, described in	<xref target="RFC5890"></xref>,	<xref target="RFC5891"></xref>,	and
+<xref target="RFC5892"></xref>)	and	a thorough understanding of	variant	approach discussed in
+<xref target="RFC4290"></xref> are both	required.
+	  </t>
+	</section>
+
+	<section title="Terminology">
+	  <t>
+The	key	words "MUST", "MUST	NOT", "REQUIRED", "SHALL", "SHALL NOT",	"SHOULD", "SHOULD NOT",
+"RECOMMENDED", "MAY", and "OPTIONAL" in	this document are to be	interpreted	as described in
+<xref target="RFC2119"></xref>.
+	  </t>
+	
+
+  <t>
+	 uLable is defined in [RFC 5890]. uLabel is expressed in this document as a number 
+	 of characters with the format of U+XXXX where XXXX is a UNICODE point.
+	  
+	  </t>	
+	  
+	  <t>
+"b-dn-1.0" in this document	is used	as an abbreviation for urn:ietf:params:xml:ns:b-dn-1.0.
+	  </t>
+	  <t>
+In examples, "C:" represents lines sent	by a protocol client and "S:" represents lines returned	by
+a protocol server. Indentation and white space in examples are provided	only to	illustrate element
+relationships and are not a	REQUIRED feature of	this specification.
+	  </t>
+	  <t>
+XML	is case	sensitive.	Unless stated otherwise, XML specifications	and	examples provided in this
+document MUST be interpreted in	the	character case presented to	develop	a conforming implementation.
+	  </t>
+	</section>
+
+	<section title="Definitions">
+	  <t>
+The	following definitions are used in this document:
+	  </t>
+	  <t>
+		  <list	style="symbols">
+			<t>
+Registered Domain Name (RDN), represents the valid domain name that users submitted for
+registration by	the	first time.
+			</t>
+			<t>
+Bundled Domain Name	(BDN),	represents the bundled domain name produced according to the bundled domain name 
+registration policy.
+			</t>
+
+
+		  </list>
+	  </t>
+	</section>
+
+	<section title="Overview">
+	  <t>
+Domain registries have traditionally adopted a registration	model whereby metadata relating	to a
+domain name, such as its expiration	date and sponsoring	registrar, are stored as properties	of the
+domain object. The domain object is	then considered	an atomic unit of registration,	on which
+operations such	as update, renewal and deletion	may	be performed.
+	  </t>
+	  <t>
+Bundled names, brought about the need for	multiple domain	names to be	registered and
+managed	as a single	package. In	this model,	the	registry typically accepts
+a domain registration request (i.e.	EPP	domain &lt;create&gt; command) containing the domain name
+to be registered. This domain name is referred to as the RDN in this document.	As part	of the
+processing of the registration request,	the	registry generates a set of	bundled names that
+are	related	to the RDN, either programmatically or	with the guidance of registration policies,	and
+place them in the registration package together with	the	RDN.
+	  </t>
+	  
+	  
+	  
+	  
+	  <t>
+The	bundled names have the same properties, such as expiration date and sponsoring
+registrar, by sharing one domain object. So	when users update any property of a domain object within a bundle package, that property
+of all other domain objects in the bundle package will be updated at the same time.
+	  </t>
+	</section>
+	
+	
+		<section title="Requirement for Bundling Registration of Names">
+	  <t>
+The bundled names whether they are in the form of "V-label.TLD" or in the form of "LABEL.V-tld" should share 
+some parameter or attributes assoicated with domain names. Typically, Bundled names will share the following 
+parameters or attributes:<vspace blankLines="0" />
+o Registrar Ownership<vspace blankLines="0" />
+o Registration and Expiry Dates<vspace blankLines="0" />
+o Registrant, Admin, Billing, and Technical Contacts<vspace blankLines="0" />
+o Name Server Association<vspace blankLines="0" />
+o Domain Status<vspace blankLines="0" />
+o Applicable grace periods (Add Grace Period, Renewal Grace Period, Auto-Renewal Grace Period, Transfer Grace Period,
+and Redemption Grace Period)<vspace blankLines="0" />
+
+	  </t>
+	  <t>
+Because the domain names are bundled and share the same parameters or attributes, the EPP command should 
+do some processing for these requirements:<vspace blankLines="0" />
+o When performing a domain check, either BDN or RDN can be queried for the EPP command, and
+will return the same response.<vspace blankLines="0" />
+o When performing a domain info, either BDN or RDN can be queried, 
+the same response will include both BDN and RDN information with the same attributes.<vspace blankLines="0" />
+o When performing a domain Create,
+ either BDN or RDN will be accepted. If the domain name is available, both BDN and RDN
+ will be registered.<vspace blankLines="0" />
+o When performing a domain Delete,
+ either BDN or RDN will be accepted. If the domain name is available, both BDN and RDN
+ will be deleted.<vspace blankLines="0" />
+
+o When performing a domain renew,
+ either BDN or RDN will be accepted. Upon a successful domain renewal,both BDN and RDN
+ will have their expiry date extended by the requested term. Upon a successful domain
+renewal, both BDN and RDN will conform to the same renew grace period.<vspace blankLines="0" />
+o When performing a domain transfer,
+ either BDN or RDN will be accepted. Upon successful completion of a domain
+transfer request, both BDN and RDN will enter a pendingTransfer status. Upon approval of the
+transfer request, both BDN and RDN will be owned and managed by the same new registrant.<vspace blankLines="0" />
+o When performing a domain update, 
+ either BDN or RDN will be accepted.  Any modifications to contact associations,
+name server associations, domain status values and authorization information will be applied to both BDN and RDN.<vspace blankLines="0" /> 
+
+	  </t>
+	</section>
+
+	<section title="Object Attributes">
+	  <t>
+This extension defines following additional	elements to	the	EPP	domain name	mapping
+<xref target="RFC5731"></xref>.	All	of these additional	elements can be	got	from &lt;domain:info&gt;
+command.
+	  </t>
+	  <section title="RDN">
+		<t>
+The	RDN is an ASCII name or an IDN with	the	A-label	<xref target="RFC5890"></xref> form.	
+In this	document, its corresponding	element	is &lt;b-dn:rdn&gt;. An optional attribute
+"uLabel" associated	with &lt;b-dn:rdn&gt; is used to represent	the	U-label
+<xref target="RFC5890"></xref> form. An	optional boolean "activated" attribute,	with a default true
+value, is used to indicate the presence	of the label in	the	zone file.
+		</t>
+		<t>
+For	example: &lt;b-dn:rdn uLabel="U+5B9E""U+4F8B".example&gt;
+xn--fsq270a.example&lt;/b-dn:rdn&gt;
+		</t>
+	  </section>
+	  <section title="BDN">
+		<t>
+The	BDN is	an ASCII name or an IDN with the A-label	<xref target="RFC5890"></xref> form	which is converted from	the
+corresponding BDN.	In this	document, its corresponding	element	is &lt;b-dn:bdn&gt;. An optional attribute
+"uLabel" associated	with &lt;b-dn:bdn&gt; is used to represent	the	U-label
+<xref target="RFC5890"></xref> form. 
+		</t>
+		<t>
+For	example: &lt;b-dn:bdn uLabel="U+5BE6""U+4F8B".example&gt;
+xn--fsqz41a.example&lt;/b-dn:bdn&gt;
+		</t>
+	  </section>
+	 
+	</section>
+
+	<section title="EPP	Command	Mapping">
+	  <t>
+A detailed description of the EPP syntax and semantics can be found	in the EPP core	protocol
+specification <xref	target="RFC5730"></xref>. The command mappings described here are specifically
+for	use	in provisioning	and	managing bundled names via EPP.
+	  </t>
+	  <section title="EPP Query	Commands">
+		<t>
+EPP	provides three commands	to retrieve	domain information:	&lt;check&gt; to determine if a	domain
+object can be provisioned within a repository, &lt;info&gt;	to retrieve	detailed information
+associated with	a domain object, and &lt;transfer&gt; to retrieve domain-object	transfer status
+information.
+		</t>
+		<section title="EPP	&lt;check&gt; Command">
+		   <t>
+This extension does	not	add	any	element	to the EPP &lt;check&gt; command or	&lt;check&gt; response
+described in the EPP domain	name mapping <xref target="RFC5731"></xref>. However, when either RDN or BDN is sent for check,
+ response	SHOULD contain both RDN and BDN information, which may also give some explanation in the reason field to tell the user
+that the associated domain name is a produced name	according to some bundle domain name policy.
+		   </t>
+		   
+		   <figure>
+			<artwork><![CDATA[
+Example	<check> Response	for	an authorized client:
+
+S:<?xml	version="1.0" encoding="UTF-8" standalone="no"?>
+S:<epp xmlns="urn:ietf:params:xml:ns:epp-1.0">
+S:	<response>
+S:	  <result code="1000">
+S:		<msg>Command completed successfully</msg>
+S:	  </result>
+S:	  <resData>
+S:		<domain:chkData
+S:		 xmlns:domain="urn:ietf:params:xml:ns:domain-1.0">
+S:        <domain:cd>
+S:		    <domain:name avail="1">
+               xn--fsq270a.example</domain:name>
+S:        </domain:cd>
+S:        <domain:cd>
+S:		    <domain:name avail="1">
+               xn--fsqz41a.example</domain:name>
+S:		    <domain:reason>This associated domain name is 
+            a produced name
+        	based on bundle name policy.</domain:reason>
+S:        </domain:cd>
+S:		 </domain:chkData>
+S:	  </resData>
+S:	  <trID>
+S:		<clTRID>ABC-12345</clTRID>
+S:		<svTRID>54322-XYZ</svTRID>
+S:	  </trID>
+S:	</response>
+S:</epp>
+		]]></artwork>
+	  </figure>
+	  
+	  
+	  
+		</section>
+		<section title="EPP	&lt;info&gt; Command">
+		   <t>
+This extension does	not	add	any	element	to the EPP &lt;info&gt;	command	described in the EPP domain
+mapping	<xref target="RFC5731"></xref>.	However, additional	elements are defined for the
+&lt;info&gt; response.
+		   </t>
+		   <t>
+When an	&lt;info&gt; command has been processed	successfully, the EPP &lt;resData&gt; element MUST
+contain	child elements as described	in the EPP domain mapping <xref	target="RFC5731"></xref>. In
+addition, the EPP &lt;extension&gt;	element	SHOULD contain a child &lt;b-dn:infData&gt;	element	that
+identifies the extension namespace if the domain object	has	data associated	with this extension	and
+based on its service policy. The &lt;b-dn:infData&gt; element contains the &lt;b-dn:bundle&gt; which
+has	the	following child	elements:
+		   </t>
+		   <t>
+			   <list style="symbols">
+				 <t>
+An &lt;b-dn:rdn&gt; element that contains the RDN, along with	the	attributes described below.
+				 </t>
+				 <t>
+An OPTIONAL	&lt;b-dn:bdn&gt; element that contains	the	BDN, along	with the attributes	described
+below.
+				 </t>
+				
+			   </list>
+		   </t>
+		   <t>
+The	above elements contain the following attributes:
+		   <list style="symbols">
+			  <t>
+An optional  "uLabel" attribute represents	the	U-label	of the element.
+			  </t>
+
+		   </list>
+		  </t>
+			<figure>
+			<artwork><![CDATA[
+Example	<info> Response	for	an authorized client:
+
+S:<?xml	version="1.0" encoding="UTF-8" standalone="no"?>
+S:<epp xmlns="urn:ietf:params:xml:ns:epp-1.0">
+S:	<response>
+S:	  <result code="1000">
+S:		<msg>Command completed successfully</msg>
+S:	  </result>
+S:	  <resData>
+S:		<domain:infData
+S:		 xmlns:domain="urn:ietf:params:xml:ns:domain-1.0">
+S:		  <domain:name>xn--fsq270a.example</domain:name>
+S:		  <domain:roid>58812678-domain</domain:roid>
+S:		  <domain:status s="ok"/>
+S:		  <domain:registrant>123</domain:registrant>
+S:		  <domain:contact type="admin">123</domain:contact>
+S:		  <domain:contact type="tech">123</domain:contact>
+S:		  <domain:ns>
+S:	        <domain:hostObj>ns1.example.cn
+               </domain:hostObj>
+S:		  </domain:ns>
+S:		  <domain:clID>ClientX</domain:clID>
+S:		  <domain:crID>ClientY</domain:crID>
+S:		  <domain:crDate>2011-04-03T22:00:00.0Z
+                       </domain:crDate>
+S:		  <domain:exDate>2012-04-03T22:00:00.0Z
+                       </domain:exDate>
+S:		  <domain:authInfo>
+S:			<domain:pw>2fooBAR</domain:pw>
+S:		  </domain:authInfo>
+S:		</domain:infData>
+S:	  </resData>
+S:	  <extension>
+S:		<b-dn:infData
+S:		 xmlns:b-dn="urn:ietf:params:xml:ns:b-dn-1.0">
+S:		  <b-dn:bundle>
+S:			<b-dn:rdn uLabel="U+5B9E""U+4F8B".example
+S:			 >xn--fsq270a.example</b-dn:rdn>
+S:			<b-dn:bdn uLabel="U+5BE6""U+4F8B".example
+S:			 >xn--fsqz41a.example</b-dn:bdn>
+S:		  </b-dn:bundle>
+S:		</b-dn:infData>
+S:	  </extension>
+S:	  <trID>
+S:		<clTRID>ABC-12345</clTRID>
+S:		<svTRID>54322-XYZ</svTRID>
+S:	  </trID>
+S:	</response>
+S:</epp>
+		]]></artwork>
+	  </figure>
+		   <t>
+&lt;info&gt; Response for the unauthorized client has not been changed,see
+<xref target="RFC5731"></xref> for detail.
+		   </t>
+		   <t>
+An EPP error response MUST be returned if an &lt;info&gt; command cannot be	processed for any reason.
+		   </t>
+		</section>
+		<section title="EPP	&lt;transfer&gt; Query Command">
+		   <t>
+This extension does	not	add	any	element	to the EPP &lt;transfer&gt;	command	or &lt;transfer&gt; reponse described in the EPP domain mapping <xref target="RFC5731"></xref>.
+		   </t>
+		</section>
+	  </section>
+
+	  <section title="EPP Transform	Commands">
+		<t>
+EPP	provides five commands to transform	domain objects:	&lt;create&gt; to create an	instance of	a
+domain object, &lt;delete&gt; to delete	an instance	of a domain	object,	&lt;renew&gt; to extend	the
+validity period	of a domain	object,	&lt;transfer&gt; to	manage domain object sponsorship changes,
+and	&lt;update&gt; to change information associated	with a domain object.
+		</t>
+		
+				   <t>
+When theses commands have been processed	successfully, the EPP &lt;resData&gt; element MUST
+contain	child elements as described	in the EPP domain mapping <xref	target="RFC5731"></xref>. This EPP &lt;extension&gt;	element	SHOULD contain 
+ the &lt;b-dn:bundle&gt; which
+has	the	following child	elements:
+		   </t>
+		   <t>
+			   <list style="symbols">
+				 <t>
+An &lt;b-dn:rdn&gt; element that contains the RDN, along with	the	attributes described below.
+				 </t>
+				 <t>
+An OPTIONAL	&lt;b-dn:bdn&gt; element that contains	the	BDN, along	with the attributes	described
+below.
+				 </t>
+				
+			   </list>
+		   </t>
+		   <t>
+The	above elements contain the following attribute:
+		   <list style="symbols">
+			  <t>
+An optional  "uLabel" attribute represents	the	U-label	of the element.
+			  </t>
+
+		   </list>
+		  </t>
+		
+		
+		
+		
+		<section title="EPP	&lt;create&gt; Command">
+		   <t>
+This extension defines additional elements to extend the EPP &lt;create&gt;	command	described in the
+EPP	domain name	mapping	<xref target="RFC5731"></xref> for bundled names	registration.
+		   </t>
+		   <t>
+In addition	to the EPP command elements	described in the EPP domain	mapping
+<xref target="RFC5731"></xref>,	the	&lt;create&gt; command SHALL contain an	&lt;extension&gt;
+element. The &lt;extension&gt; element SHOULD contain a	child &lt;b-dn:create&gt; element that
+identifies the bundle namespace and the location of the bundle name schema. 
+		  </t>
+			<figure>
+			<artwork><![CDATA[
+Example	<create> command:
+
+C:<?xml	version="1.0" encoding="UTF-8" standalone="no"?>
+C:<epp xmlns="urn:ietf:params:xml:ns:epp-1.0">
+C:	<command>
+C:	  <create>
+C:		<domain:create
+C:		 xmlns:domain="urn:ietf:params:xml:ns:domain-1.0">
+C:		  <domain:name>xn--fsq270a.example</domain:name>
+C:		  <domain:period unit="y">2</domain:period>
+C:		  <domain:registrant>123</domain:registrant>
+C:		  <domain:contact type="admin">123</domain:contact>
+C:		  <domain:contact type="tech">123</domain:contact>
+C:		  <domain:authInfo>
+C:			<domain:pw>2fooBAR</domain:pw>
+C:		  </domain:authInfo>
+C:		</domain:create>
+C:	  </create>
+C:	  <extension>
+C:		<b-dn:create
+C:		 xmlns:b-dn="urn:ietf:params:xml:ns:b-dn-1.0">
+C:             <b-dn:rdn uLabel="U+5B9E""U+4F8B".example>
+C:                    xn--fsq270a.example</b-dn:rdn>
+C:		</b-dn:create>
+C:	  </extension>
+C:	  <clTRID>ABC-12345</clTRID>
+C:	</command>
+C:</epp>
+		]]></artwork>
+	  </figure>
+
+		   <t>
+When an	&lt;create&gt; command has been	processed successfully,	the	EPP	&lt;creData&gt;	element
+MUST contain child elements	as described in	the	EPP	domain mapping <xref target="RFC5731"></xref>.
+In addition, the EPP &lt;extension&gt; element SHOULD contain a	child &lt;b-dn:creData&gt; element
+that identifies	the	extension namespace	if the domain object has data associated with this extension
+and	based on its service policy. The &lt;b-dn:creData&gt; element contains the &lt;b-dn:bundle&gt;
+element.
+		   </t>
+		   
+			<figure>
+			<artwork><![CDATA[
+Example	<create> Response for an authorized	client:
+
+S:<?xml	version="1.0" encoding="UTF-8" standalone="no"?>
+S:<epp xmlns="urn:ietf:params:xml:ns:epp-1.0">
+S:	<response>
+S:	  <result code="1000">
+S:		<msg>Command completed successfully</msg>
+S:	  </result>
+S:	  <resData>
+S:		<domain:creData
+S:		 xmlns:domain="urn:ietf:params:xml:ns:domain-1.0">
+S:		  <domain:name>xn--fsq270a.example</domain:name>
+S:		  <domain:crDate>1999-04-03T22:00:00.0Z</domain:crDate>
+S:		  <domain:exDate>2001-04-03T22:00:00.0Z</domain:exDate>
+S:		</domain:creData>
+S:	  </resData>
+S:	  <extension>
+S:		<b-dn:creData
+S:		 xmlns:b-dn="urn:ietf:params:xml:ns:b-dn-1.0">
+S:		  <b-dn:bundle>
+S:			<b-dn:rdn uLabel="U+5B9E""U+4F8B".example
+S:			 >xn--fsq270a.example</b-dn:rdn>
+S:			<b-dn:bdn uLabel="U+5BE6""U+4F8B".example
+S:			 >xn--fsqz41a.example</b-dn:bdn>
+S:		  </b-dn:bundle>
+S:		</b-dn:creData>
+S:	  </extension>
+S:	  <trID>
+S:		<clTRID>ABC-12345</clTRID>
+S:		<svTRID>54322-XYZ</svTRID>
+S:	  </trID>
+S:	</response>
+S:</epp>
+		]]></artwork>
+	  </figure>
+		   <t>
+&lt;create&gt; Response	for	the	unauthorized client	has	not	been changed,see
+<xref target="RFC5731"></xref> for detail.
+		   </t>
+		   <t>
+An EPP error response MUST be returned if an &lt;create&gt;	command	cannot be processed	for	any
+reason.
+		   </t>
+		</section>
+
+		<section title="EPP	&lt;delete&gt; Command">
+		   <t>
+This extension does	not	add	any	element	to the EPP &lt;delete&gt; command described	in the EPP
+domain mapping <xref target="RFC5731"></xref>. However,	additional elements	are	defined	for	the
+&lt;delete&gt; response.
+		   </t>
+		   <t>
+When a &lt;delete&gt; command has been processed successfully, the EPP &lt;delData&gt; element MUST
+contain	child elements as described	in the EPP domain mapping <xref	target="RFC5731"></xref>. In
+addition, the EPP &lt;extension&gt;	element	SHOULD contain a child &lt;b-dn:delData&gt;	element	that
+identifies the extension namespace if the domain object	has	data associated	with this extension	and
+based on its service policy. The &lt;b-dn:delData&gt; element SHOULD contain the &lt;b-dn:bundle&gt;
+element. 
+		   </t>
+		 
+			<figure>
+			<artwork><![CDATA[
+Example	<delete> response:
+
+S:<?xml	version="1.0" encoding="UTF-8" standalone="no"?>
+S:<epp xmlns="urn:ietf:params:xml:ns:epp-1.0">
+S:	<response>
+S:	  <result code="1000">
+S:		<msg>Command completed successfully</msg>
+S:	  </result>
+S:	  <extension>
+S:		<b-dn:delData
+S:		 xmlns:b-dn="urn:ietf:params:xml:ns:b-dn-1.0">
+S:		  <b-dn:bundle>
+S:			<b-dn:rdn uLabel="U+5B9E""U+4F8B".example>xn--fsq270a.example</b-dn:rdn>
+S:			<b-dn:bdn uLabel="U+5BE6""U+4F8B".example>xn--fsqz41a.example</b-dn:bdn>
+S:		  </b-dn:bundle>
+S:		</b-dn:delData>
+S:	  </extension>
+S:	  <trID>
+S:		<clTRID>ABC-12345</clTRID>
+S:		<svTRID>54321-XYZ</svTRID>
+S:	  </trID>
+S:	</response>
+S:</epp>
+		]]></artwork>
+	  </figure>
+		   <t>
+An EPP error response MUST be returned if a	&lt;delete&gt; command cannot be processed for any
+reason.
+		   </t>
+		</section>
+
+		<section title="EPP	&lt;renew&gt; Command">
+		   <t>
+
+This extension does	not	add	any	element	to the EPP &lt;renew&gt; command 
+described in the EPP domain	name mapping <xref target="RFC5731"></xref>. However, when either RDN or BDN is sent for renew,
+ response	SHOULD contain both RDN and BDN information. 
+ 
+ When the command has been processed	successfully, the EPP &lt;resData&gt; element MUST
+contain	child elements as described	in the EPP domain mapping <xref	target="RFC5731"></xref>. This EPP &lt;extension&gt;	element	SHOULD contain 
+ the &lt;b-dn:renData&gt; which contains  &lt;b-dn:bundle&gt; element.  
+ 
+ 
+ 		   </t>
+		</section>
+
+		<section title="EPP	&lt;transfer&gt; Command">
+		   <t>
+		   
+		 This extension does	not	add	any	element	to the EPP &lt;transfer&gt; command 
+described in the EPP domain	name mapping <xref target="RFC5731"></xref>. 
+ 
+ When the command has been processed	successfully, the EPP &lt;resData&gt; element MUST
+contain	child elements as described	in the EPP domain mapping <xref	target="RFC5731"></xref>. This EPP &lt;extension&gt;	element	SHOULD contain 
+ the &lt;b-dn:trnData&gt; which contains  &lt;b-dn:bundle&gt; element.  
+		   
+		   </t>
+		</section>
+
+		<section title="EPP	&lt;update&gt; Command">
+		   
+		      <t>
+		   
+		 This extension does	not	add	any	element	to the EPP &lt;update&gt; command 
+described in the EPP domain	name mapping <xref target="RFC5731"></xref>. 
+ 
+ When the command has been processed	successfully, the EPP &lt;resData&gt; element MUST
+contain	child elements as described	in the EPP domain mapping <xref	target="RFC5731"></xref>. This EPP &lt;extension&gt;	element	SHOULD contain 
+ the &lt;b-dn:upData&gt; which contains  &lt;b-dn:bundle&gt; element.    
+		   
+		   </t>
+		   
+		   
+		 
+		</section>
+	  </section>
+	</section>
+
+	<section title="Formal Syntax">
+	  <t>
+An EPP object name mapping extension for bundled names is specified in XML Schema notation. The
+formal syntax presented	here is	a complete schema representation of	the	object mapping suitable	for
+automated validation of	EPP	XML	instances. The BEGIN and END tags are not part of the schema; they
+are	used to	note the beginning and ending of the schema	for	URI	registration purposes.
+	  </t>
+ <figure>
+ <artwork><![CDATA[
+BEGIN
+<?xml version="1.0"     encoding="UTF-8"?>
+ 
+   <schema targetNamespace="urn:ietf:params:xml:ns:b-dn-1.0"
+            xmlns:b-dn="urn:ietf:params:xml:ns:b-dn-1.0"
+            xmlns:epp="urn:ietf:params:xml:ns:epp-1.0"
+            xmlns:eppcom="urn:ietf:params:xml:ns:eppcom-1.0"
+            xmlns="http://www.w3.org/2001/XMLSchema"
+            elementFormDefault="qualified">
+ 
+   <!--
+   Import common element types.
+   -->
+   <import namespace="urn:iana:xml:ns:eppcom-1.0"
+   schemaLocation="eppcom-1.0.xsd"/>
+   <import namespace="urn:iana:xml:ns:epp-1.0"
+   schemaLocation="epp-1.0.xsd"/>
+   <annotation>
+     <documentation>
+           Extensible Provisioning Protocol v1.0
+           Bundle Domain Extension Schema v1.0
+     </documentation>
+   </annotation>
+ 
+   <!--
+   Child elements found in EPP     commands.
+   -->
+   <element name="create" type="b-dn:createDataType"/>
+ 
+   <!--
+   Child elements of the <b-dn:create>     command
+   All     elements must be present at     time of creation
+   -->
+   <complexType name="createDataType">
+     <sequence>
+           <element name="rdn" type="b-dn:rdnType"
+            minOccurs="0" maxOccurs="unbounded" />
+     </sequence>
+   </complexType>
+ 
+ 
+   <!--
+   Child elements of the <b-dn:update>     command
+   All     elements must be present at     time of creation
+   -->
+ 
+   <!--
+   Child elements found in EPP     commands.
+   -->
+   <element name="infData" type="b-dn:trnDataType"/>
+   <element name="delData" type="b-dn:trnDataType"/>
+   <element name="creData" type="b-dn:trnDataType"/>
+   <element name="renData" type="b-dn:trnDataType"/>
+   <element name="trnData" type="b-dn:trnDataType"/>
+   <element name="upData" type="b-dn:trnDataType"/>
+ 
+   <complexType name="trnDataType">
+     <sequence>
+           <element name="bundle" type="b-dn:bundleType" />
+     </sequence>
+   </complexType>
+ 
+   <!--
+   <transfer> response     elements.
+   All     elements must be present at     time of poll query
+   -->
+   <complexType name="bundleType">
+     <sequence>
+           <element name="rdn" type="b-dn:rdnType" />
+           <element name="bdn" type="b-dn:rdnType" 
+		       minOccurs="0"   maxOccurs="unbounded" />
+ 
+     </sequence>
+   </complexType>
+ 
+   <complexType name="rdnType">
+     <simpleContent>
+           <extension base="eppcom:labelType">
+             <attribute name="uLabel" type="eppcom:labelType"/>
+ 
+           </extension>
+     </simpleContent>
+   </complexType>
+ 
+   <!--
+   End     of schema.
+   -->
+   </schema>
+
+END
+]]></artwork>
+</figure>
+	</section>
+
+	<section title="Internationalization Considerations" anchor="Internationalization">
+	  <t>
+EPP	is represented in XML, which provides native support for encoding information using	the	Unicode
+character set and its more compact representations including UTF-8.	Conformant XML processors
+recognize both UTF-8 and UTF-16. Though	XML	includes provisions	to identify	and	use	other character
+encodings through use of an	"encoding" attribute in	an &lt;?xml?&gt; declaration, use of UTF-8 is
+RECOMMENDED.
+	  </t>
+	  <t>
+As an extension	of the EPP domain name mapping,	the	elements, element content described	in this
+document MUST inherit the internationalization conventions used	to represent higher-layer domain
+and	core protocol structures present in	an XML instance	that includes this extension.
+	  </t>
+	</section>
+
+	<section title="IANA Considerations" anchor="Iana">
+	  <t>
+This document uses URNs	to describe	XML	namespaces and XML schemas conforming to a registry
+mechanism described	in <xref target="RFC3688"></xref>. IANA	is requested to	assignment the
+following two URIs.
+	  </t>
+	  <t>
+Registration request for the IDN namespace:
+	  </t>
+	  <t>
+		 <list style="symbols">
+			<t>
+URI: urn:ietf:params:xml:ns:b-dn-1.0
+			</t>
+			<t>
+Registrant Contact:	See	the	"Author's Address" section of this document.
+			</t>
+			<t>
+XML: None. Namespace URI does not represent	an XML specification.
+			</t>
+		 </list>
+	  </t>
+	  <t>
+Registration request for the IDN XML schema:
+	  </t>
+	  <t>
+		 <list style="symbols">
+			<t>
+URI: urn:ietf:params:xml:schema:b-dn-1.0
+			</t>
+			<t>
+Registrant Contact:	See	the	"Author's Address" section of this document.
+			</t>
+			<t>
+XML: See the "Formal Syntax" section of	this document.
+			</t>
+		 </list>
+	  </t>
+	</section>
+
+	<section title="Security Considerations" anchor="security">
+	  <t>
+The	object mapping extension described in this document	does not provide any other security
+services or	introduce any additional considerations	beyond those described by
+<xref target="RFC5730"></xref> or those	caused by the protocol layers used by EPP.
+	  </t>
+	</section>
+
+	
+	
+	
+	
+	
+		<section title="Implementation Status" anchor="status">
+	  <t>
+   Note to RFC Editor: Please remove this section before publication.
+	  </t>
+	<t>
+		  <list	style="symbols">  
+	  <t>
+   CNNIC has implemented this extension in his EPP based Chinese domain name registration system.
+	  </t>
+	  
+	  	  <t>
+   Public Interest Registry, has requested to implement technical bundling of second level domains for .NGO and .ONG.
+     This means that by registering and purchasing a domain in the .ngo TLD, for example, the NGO registrant 
+   is also registering and purchasing the corresponding name in the .ong TLD (and vice-versa for registrations in .ong).
+	  </t>
+	  
+		  </list>
+	   </t>
+	</section>
+
+	<section title="Acknowledgements" anchor="Acknowledgements">
+	  <t>
+The	authors	especially thank the authors of	<xref target="RFC5730"></xref> and
+<xref target="RFC5731"></xref> and the following ones of CNNIC:	Weiping	Yang, Chao Qi.
+This draft extends the draft draft-kong-epp-idn-variants-mapping to support both forms of bundled names:
+ V-label.TLD and LABEL.V-tld.
+	  </t>
+	  <t>
+Useful comments	were made by John Klensin, Scott Hollenbeck, Patrick Mevzek	and	Edward Lewis.
+	  </t>
+	</section>
+	
+
+	<section title="Change History"	anchor="Change">
+	  <t>
+		RFC	Editor:	Please remove this section.
+	  </t>
+	  <section title="draft-kong-epp-bundle-mapping: Version 00">
+		<t>
+		  <list	style="symbols">
+			<t>
+			EPP extensiton for bundled domain name registrations.
+			</t>
+			
+		  </list>
+		</t>
+	  </section>
+	<section title="draft-kong-epp-bundle-mapping: Version 01">
+		<t>
+		  <list	style="symbols">
+			<t>
+			Change the proposed category from EXP to STD.
+			</t>
+			<t>
+			Add the section of Implementation Status.
+			</t>
+			<t>
+			Refine the text, and update the examples.
+			</t>
+		  </list>
+		</t>
+	  </section>
+	  
+	  	<section title="draft-kong-epp-bundle-mapping: Version 02">
+		<t>
+		  <list	style="symbols">
+			<t>
+			Refine the texts.
+			</t>
+
+		  </list>
+		</t>
+	  </section>
+	  
+	  
+	  
+	  	  	<section title="draft-ietf-regext-bundle-mapping: Version 00">
+		<t>
+		  <list	style="symbols">
+			<t>
+			accepted as WG document.
+			</t>
+
+		  </list>
+		</t>
+	  </section>
+		  
+	</section>
+	
+	
+
+	
+  </middle>
+
+  <back>
+	<references	title="Normative References">
+			&RFC2119;
+			&RFC3688;
+			&RFC5730;
+			&RFC5731;
+			&RFC5890;
+			&RFC5891;
+			&RFC5892;
+			
+	  <reference anchor="W3C.REC-xml-20040204"
+				 target="http://www.w3.org/TR/2004/REC-xml-20040204">
+		<front>
+		  <title>"Extensible Markup	Language (XML) 1.0 (Third Edition)",
+		  World	Wide Web Consortium	FirstEdition REC-xml-20040204</title>
+		  <author initials="T" surname="Bray">
+			<organization></organization>
+		  </author>
+		  <author initials="J" surname="Paoli">
+			<organization></organization>
+		  </author>
+		  <author initials="C" surname="Sperberg-McQueen">
+			<organization></organization>
+		  </author>
+		  <author initials="E" surname="Maler">
+			<organization></organization>
+		  </author>
+		  <author initials="F" surname="Yergeau">
+			<organization></organization>
+		  </author>
+		  <date	month="February" year="2004" />
+		</front>
+	  </reference>
+
+	  <reference anchor="W3C.REC-xmlschema-1-20041028"
+				 target="http://www.w3.org/TR/2004/REC-xmlschema-1-20041028">
+		<front>
+		  <title>"XML Schema Part 1: Structures	Second Edition", World Wide
+		  Web Consortium Recommendation	REC-xmlschema-1-20041028</title>
+		  <author initials="H" surname="Thompson">
+			<organization></organization>
+		  </author>
+		  <author initials="D" surname="Beech">
+			<organization></organization>
+		  </author>
+		  <author initials="M" surname="Maloney">
+			<organization></organization>
+		  </author>
+		  <author initials="N" surname="Mendelsohn">
+			<organization></organization>
+		  </author>
+		  <date	month="October"	year="2004"	/>
+		</front>
+	  </reference>
+
+	  <reference anchor="W3C.REC-xmlschema-2-20041028"
+				 target="http://www.w3.org/TR/2004/REC-xmlschema-2-20041028">
+		<front>
+		  <title>"XML Schema Part 2: Datatypes Second Edition",	World Wide
+		  Web Consortium Recommendation	REC-xmlschema-2-20041028</title>
+		  <author initials="P" surname="Biron">
+			<organization></organization>
+		  </author>
+		  <author initials="A" surname="Malhotra">
+			<organization></organization>
+		  </author>
+		  <date	month="October"	year="2004"	/>
+		</front>
+	  </reference>
+	</references>
+
+	<references	title="Informative References">
+		&RFC4290;	
+	  <reference anchor="Final.Integrated.Issues.Report"
+				 target="http://www.icann.org/en/topics/idn/idn-vip-integrated-issues-final-clean-20feb12-en.pdf">
+		<front>
+		  <title>The IDN Variant Issues	Project: A Study of	Issues Related to the Management of
+		  IDN Variant TLDs</title>
+		  <author initials="" surname="">
+			<organization>ICANN</organization>
+		  </author>
+		  <date	month="February" year="2012" />
+		</front>
+	  </reference>
+	
+
+	  <reference anchor="bundle.name"
+				 target="https://www.icann.org/public-comments/rstep-technical-bundling-2014-07-29-en">
+		<front>
+		  <title>Registry Services Technical Evaluation Panel (RSTEP) Report 
+		  on Public Interest Registry's Request to Implement Technical Bundling in .NGO and .ONG</title>
+		  <author initials="" surname="">
+			<organization>ICANN</organization>
+		  </author>
+		  <date	month="July" year="2014" />
+		</front>
+	  </reference>	
+	  
+	  
+	  
+	</references>
+  </back>
+</rfc>
